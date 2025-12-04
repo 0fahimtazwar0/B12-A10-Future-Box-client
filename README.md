@@ -1,16 +1,56 @@
-# React + Vite
+🎨 Completed Color System
+Primary Colors
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Primary
+#DAAA63 — warm gold accent
 
-Currently, two official plugins are available:
+Primary Dark
+#A8743A — deeper version for hover/active
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Secondary Colors
 
-## React Compiler
+Secondary
+#2C1810 — rich dark brown
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Secondary Light
+#4A2E22 — softer brown for backgrounds & dividers
 
-## Expanding the ESLint configuration
+Neutrals
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Background
+#E3D5BD — beige (matches your image)
+
+Surface
+#F5EFE4 — light cream for cards, sections
+
+Text Colors
+
+Text Primary
+#2C1810 — dark brown (high readability)
+
+Text Secondary
+#6B4A33 — muted warm brown
+
+Text Inverted
+#F5EFE4 — use on dark backgrounds
+
+Utility Colors
+
+Border
+#C8B799 — subtle beige border
+
+Shadow / Depth
+rgba(44, 24, 16, 0.15)
+
+//
+background gradient
+https://meshgradient.in
+
+banner btn
+https://uiverse.io
+
+photos
+https://www.freepik.com
+
+fonts
+https://fonts.google.com
