@@ -1,0 +1,146 @@
+[
+  {
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "genre": "Fiction",
+    "rating": "5",
+    "summary": "A powerful story about racial injustice and moral growth in the American South.",
+    "coverImage": "https://i.ibb.co/7J0wV5X/to-kill-a-mockingbird.jpg",
+    "userEmail": "user1@example.com"
+  },
+  {
+    "title": "1984",
+    "author": "George Orwell",
+    "genre": "Dystopian",
+    "rating": "5",
+    "summary": "A chilling depiction of totalitarianism, surveillance, and loss of freedom.",
+    "coverImage": "https://i.ibb.co/gFhN8RW/1984.jpg",
+    "userEmail": "user2@example.com"
+  },
+  {
+    "title": "A Song of Ice and Fire",
+    "author": "George R. R. Martin",
+    "genre": "Fantasy",
+    "rating": "5",
+    "summary": "The epic fantasy saga of noble families, political intrigue, and the looming threat beyond the Wall.",
+    "coverImage": "https://i.ibb.co/5x9G0Bx/asoiaf.jpg",
+    "userEmail": "user3@example.com"
+  },
+  {
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "genre": "Fantasy",
+    "rating": "5",
+    "summary": "Bilbo Baggins embarks on an unexpected journey to recover a lost treasure.",
+    "coverImage": "https://i.ibb.co/3kYV3jP/hobbit.jpg",
+    "userEmail": "user4@example.com"
+  },
+  {
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "Romance",
+    "rating": "4.7",
+    "summary": "Elizabeth Bennet navigates love, pride, and social expectations.",
+    "coverImage": "https://i.ibb.co/LQZ1v2N/pride.jpg",
+    "userEmail": "user5@example.com"
+  },
+  {
+    "title": "The Catcher in the Rye",
+    "author": "J.D. Salinger",
+    "genre": "Fiction",
+    "rating": "4",
+    "summary": "Holden Caulfield recounts his experiences in New York after leaving school.",
+    "coverImage": "https://i.ibb.co/4Y0j1H7/catcher.jpg",
+    "userEmail": "user6@example.com"
+  },
+  {
+    "title": "Harry Potter and the Sorcerer's Stone",
+    "author": "J.K. Rowling",
+    "genre": "Fantasy",
+    "rating": "5",
+    "summary": "A young boy discovers he's a wizard and enters a magical world.",
+    "coverImage": "https://i.ibb.co/k58GfRL/hp1.jpg",
+    "userEmail": "user7@example.com"
+  },
+  {
+    "title": "The Alchemist",
+    "author": "Paulo Coelho",
+    "genre": "Fiction",
+    "rating": "4.6",
+    "summary": "A shepherd boy travels in search of his personal legend.",
+    "coverImage": "https://i.ibb.co/WG1wtNq/alchemist.jpg",
+    "userEmail": "user8@example.com"
+  },
+  {
+    "title": "The Fault in Our Stars",
+    "author": "John Green",
+    "genre": "Young Adult",
+    "rating": "4.5",
+    "summary": "Two teenagers with cancer embark on a heartbreaking, beautiful journey.",
+    "coverImage": "https://i.ibb.co/tZPFNVT/fault.jpg",
+    "userEmail": "user9@example.com"
+  },
+  {
+    "title": "Becoming",
+    "author": "Michelle Obama",
+    "genre": "Memoir",
+    "rating": "4.8",
+    "summary": "The former First Lady reflects on her life and journey.",
+    "coverImage": "https://i.ibb.co/Px7T2DL/becoming.jpg",
+    "userEmail": "user10@example.com"
+  },
+  {
+    "title": "Sapiens: A Brief History of Humankind",
+    "author": "Yuval Noah Harari",
+    "genre": "Non-Fiction",
+    "rating": "4.7",
+    "summary": "A sweeping exploration of human history and evolution.",
+    "coverImage": "https://i.ibb.co/JjZkFvR/sapiens.jpg",
+    "userEmail": "user11@example.com"
+  },
+  {
+    "title": "The Da Vinci Code",
+    "author": "Dan Brown",
+    "genre": "Thriller",
+    "rating": "4.3",
+    "summary": "A symbologist unravels a conspiracy hidden in famous artworks.",
+    "coverImage": "https://i.ibb.co/RvnLWj5/davinci.jpg",
+    "userEmail": "user12@example.com"
+  },
+  {
+    "title": "The Kite Runner",
+    "author": "Khaled Hosseini",
+    "genre": "Drama",
+    "rating": "4.8",
+    "summary": "A powerful story of friendship, guilt, and redemption.",
+    "coverImage": "https://i.ibb.co/9gBkSdC/kiterunner.jpg",
+    "userEmail": "user13@example.com"
+  },
+  {
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "genre": "Self-Help",
+    "rating": "5",
+    "summary": "A practical guide to forming good habits and breaking bad ones.",
+    "coverImage": "https://i.ibb.co/8zbKh3K/atomic.jpg",
+    "userEmail": "user14@example.com"
+  },
+  {
+    "title": "The Subtle Art of Not Giving a F*ck",
+    "author": "Mark Manson",
+    "genre": "Self-Help",
+    "rating": "4.2",
+    "summary": "A counterintuitive approach to living a meaningful life.",
+    "coverImage": "https://i.ibb.co/swGpBCp/subtle.jpg",
+    "userEmail": "user15@example.com"
+  },
+  {
+    "title": "The Girl on the Train",
+    "author": "Paula Hawkins",
+    "genre": "Mystery/Thriller",
+    "rating": "4.3",
+    "summary": "A woman becomes entangled in a missing person's investigation.",
+    "coverImage": "https://i.ibb.co/yqfXk4c/girltrain.jpg",
+    "userEmail": "user16@example.com"
+  }
+]
