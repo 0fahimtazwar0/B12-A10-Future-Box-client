@@ -7,18 +7,8 @@ import { MagicCard } from "/src/components/ui/magic-card";
 
 import { cn } from "@/lib/utils";
 
-const Card = () => {
-  const { title, rating, author, coverImage, genre } = {
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    genre: "Fiction",
-    rating: "5",
-    summary:
-      "A powerful story about racial injustice and moral growth in the American South.",
-    coverImage:
-      "https://m.media-amazon.com/images/I/81aY1lxk+9L._AC_UF1000,1000_QL80_.jpg",
-    userEmail: "user1@example.com",
-  };
+const Card = ({ single }) => {
+  const { title, rating, author, coverImage, genre } = single;
 
   const starStyles = "w-6 h-6 text-yellow-400";
 
@@ -59,15 +49,14 @@ const Card = () => {
   return (
     <MagicCard
       gradientColor='var(--color-purple-300)'
-      className='w-[400px] h-fit px-7 pt-8 rounded-[30px] bg-[#fff8eb] shadow-[15px_15px_30px_#d7cdbd,-15px_-15px_30px_rgb(255,255,255,0.5)] book-hover flex-col flex gap-10'
+      className=' w-full h-full min-h-0 px-7 pt-8 rounded-[30px] bg-[#fff8eb] shadow-[15px_15px_30px_#d7cdbd,-15px_-15px_30px_rgb(255,255,255,0.5)] book-hover'
     >
       <div className='book-container'>
-        <div class='book'>
+        <div className='book'>
           <img alt='' src={coverImage} />
         </div>
       </div>
-
-      <div className=' pb-5 flex flex-col flex-1 w-full'>
+      <div className=' pb-5 mt-7  w-full flex flex-col flex-1'>
         <div className='group relative w-fit rounded-full px-3 py-1 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]'>
           <span
             className={cn(
@@ -104,6 +93,7 @@ const Card = () => {
             {rating}
           </span>
         </div>
+        <div className='flex flex-1'></div>
         <div className='flex w-full justify-stretch items-stretch'>
           <InteractiveHoverButton>View Details</InteractiveHoverButton>
         </div>

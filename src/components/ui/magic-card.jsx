@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 
 import { cn } from "@/lib/utils";
@@ -77,7 +78,7 @@ export function MagicCard({
       />
       <div className='bg-background absolute inset-px rounded-[inherit]' />
       <motion.div
-        className='pointer-events-none absolute inset-px rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100'
+        className='pointer-events-none absolute inset-px rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100  '
         style={{
           background: useMotionTemplate`
             radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)
@@ -85,7 +86,7 @@ export function MagicCard({
           opacity: gradientOpacity,
         }}
       />
-      <div className='relative'>{children}</div>
+      <div className='relative flex flex-col h-full'>{children}</div>
     </div>
   );
 }
