@@ -1,6 +1,7 @@
 import React from "react";
 import Banner from "../sections/Banner/Banner";
 import LatestBooks from "../sections/LatestBooks";
+import BestBook from "../sections/BestBook";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
         <hr />
       </div>
       <LatestBooks />
+      <BestBook />
     </div>
   );
 };
