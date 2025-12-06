@@ -5,7 +5,7 @@ import podiumImg from "/src/assets/podium.png";
 
 const BestBook = () => {
   return (
-    <div className='w-full  max-w-(--max-width) mx-auto flex flex-col'>
+    <div className='w-full flex flex-col'>
       <SectionTitle>Book of the Week</SectionTitle>
 
       <div className='grid grid-cols-2 justify-between'>

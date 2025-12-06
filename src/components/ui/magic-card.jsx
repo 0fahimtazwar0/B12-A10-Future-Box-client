@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 export function MagicCard({
   children,
   className,
+  flex,
   gradientSize = 200,
   gradientColor = "#262626",
   gradientOpacity = 0.8,
@@ -86,7 +87,7 @@ export function MagicCard({
           opacity: gradientOpacity,
         }}
       />
-      <div className='relative flex flex-col h-full'>{children}</div>
+      <div className={`relative flex h-full ${flex}`}>{children}</div>
     </div>
   );
 }

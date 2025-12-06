@@ -49,7 +49,8 @@ const Card = ({ single }) => {
   return (
     <MagicCard
       gradientColor='var(--color-purple-300)'
-      className=' w-full h-full min-h-0 px-7 pt-8 rounded-[30px] bg-[#fff8eb] shadow-[15px_15px_30px_#d7cdbd,-15px_-15px_30px_rgb(255,255,255,0.5)] book-hover'
+      className=' w-full h-full min-h-0 px-7 pt-8 rounded-[30px] bg-[#fff8eb] shadow-[15px_15px_30px_#d7cdbd,-15px_-15px_30px_rgb(255,255,255,0.5)] book-hover flex flex-col'
+      flex='flex-col'
     >
       <div className='book-container'>
         <div className='book'>

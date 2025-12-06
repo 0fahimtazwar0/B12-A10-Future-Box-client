@@ -2,6 +2,7 @@ import React from "react";
 import Banner from "../sections/Banner/Banner";
 import LatestBooks from "../sections/LatestBooks";
 import BestBook from "../sections/BestBook";
+import TopGenres from "../sections/TopGenres";
 
 const Home = () => {
   return (
@@ -10,8 +11,11 @@ const Home = () => {
         <Banner />
         <hr />
       </div>
-      <LatestBooks />
-      <BestBook />
+      <div className='w-full  max-w-(--max-width) mx-auto flex flex-col gap-20'>
+        <LatestBooks />
+        <BestBook />
+        <TopGenres />
+      </div>
     </div>
   );
 };
