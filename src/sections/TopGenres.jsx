@@ -34,7 +34,7 @@ const TopGenres = () => {
           <div className='hover-3d'>
             <figure>
               <img
-                className='size-40 min-w-40 rounded-box aspect-square object-cover'
+                className='w-40 h-40 rounded-box aspect-square object-cover'
                 src='https://img.freepik.com/free-photo/spectacular-sci-fi-landscape_23-2151954441.jpg'
               />
             </figure>
@@ -64,7 +64,7 @@ const TopGenres = () => {
           <div className='hover-3d'>
             <figure>
               <img
-                className='size-40 min-w-40 rounded-box aspect-square object-cover'
+                className='w-40 h-40 rounded-box aspect-square object-cover'
                 src='https://img.freepik.com/free-photo/unicorn-outdoors-night_23-2149450938.jpg'
               />
             </figure>
@@ -95,7 +95,7 @@ const TopGenres = () => {
           <div className='hover-3d'>
             <figure>
               <img
-                className='size-40 min-w-40 rounded-box aspect-square object-cover'
+                className='w-40 h-40 rounded-box aspect-square object-cover'
                 src='https://img.freepik.com/premium-photo/close-up-person-holding-red-umbrella_1048944-20859265.jpg'
               />
             </figure>

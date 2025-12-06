@@ -7,7 +7,7 @@ const LatestBooks = () => {
   return (
     <div>
       <SectionTitle>Latest Books</SectionTitle>
-      <div className='mt-10 grid grid-cols-3 gap-10'>
+      <div className='mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
         {sampleData.map((single, index) => {
           if (index < 6) {
             return <Card single={single} key={index} />;

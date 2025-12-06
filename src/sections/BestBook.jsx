@@ -8,8 +8,8 @@ const BestBook = () => {
     <div className='w-full flex flex-col'>
       <SectionTitle>Book of the Week</SectionTitle>
 
-      <div className='grid grid-cols-2 justify-between'>
-        <div className='w-fit mt-20'>
+      <div className='grid grid-cols-1 md:grid-cols-2 justify-between gap-10 '>
+        <div className='w-fit mt-20 mx-auto'>
           <div className='book-container float-img'>
             <div className='book'>
               <img
