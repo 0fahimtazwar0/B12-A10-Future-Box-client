@@ -3,6 +3,7 @@ import Banner from "../sections/Banner/Banner";
 import LatestBooks from "../sections/LatestBooks";
 import BestBook from "../sections/BestBook";
 import TopGenres from "../sections/TopGenres";
+import AboutBookHaven from "../sections/AboutBookHaven/AboutBookHaven";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
         <LatestBooks />
         <BestBook />
         <TopGenres />
+        <AboutBookHaven />
       </div>
     </div>
   );
