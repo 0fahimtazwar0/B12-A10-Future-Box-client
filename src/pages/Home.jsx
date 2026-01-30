@@ -12,7 +12,7 @@ const Home = () => {
         <Banner />
         <hr />
       </div>
-      <div className='w-full  max-w-(--max-width) mx-auto flex flex-col gap-20 p-(--padding)'>
+      <div className='w-full  max-w-(--max-width) mx-auto flex flex-col gap-40 p-(--padding)'>
         <LatestBooks />
         <BestBook />
         <TopGenres />

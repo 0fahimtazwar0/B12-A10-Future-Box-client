@@ -27,7 +27,7 @@ export function MagicCard({
       mouseX.set(e.clientX - rect.left);
       mouseY.set(e.clientY - rect.top);
     },
-    [mouseX, mouseY]
+    [mouseX, mouseY],
   );
 
   useEffect(() => {

@@ -11,14 +11,14 @@ import BlurText from "/src/components/ui/shadcn-io/blur-text/index.jsx";
 
 const Banner = () => {
   return (
-    <div className='bg-[url(/src/assets/banner-background.png)] bg-cover bg-no-repeat flex items-center min-h-screen lg:pt-60 px-(--padding)'>
+    <div className='bg-[url(/src/assets/banner-background.png)] bg-cover bg-no-repeat flex items-center min-h-[calc(100vh-64px)] sm:min-h-screen lg:pt-60 px-(--padding) box-border'>
       <div
         className={`mx-auto h-fit flex flex-col justify-center relative max-w-(--max-width)`}
       >
         <img
           src={flyingBook}
           alt='Flying-Book'
-          className='w-54 md:w-64 xl:w-80 flex lg:absolute top-[-200px] right-0 2xl:right-15 select-none float-img mx-auto '
+          className='w-44 sm:w-54 md:w-64 xl:w-80 flex lg:absolute top-[-200px] right-0 2xl:right-15 select-none float-img mx-auto '
         />
         <div className='text-center lg:text-left font-heading size-heading font-semibold '>
           <p className='flex items-center justify-center lg:justify-start'>

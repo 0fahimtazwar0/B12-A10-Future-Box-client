@@ -22,7 +22,7 @@ const TopGenres = () => {
       <SectionTitle>Top Genres</SectionTitle>
       <MagicCard
         gradientColor='var(--color-purple-300)'
-        className='list rounded-box justify-between w-full h-full min-h-0 px-7 pt-8 rounded-[30px] bg-[#fff8eb] shadow-[15px_15px_30px_#d7cdbd,-15px_-15px_30px_rgb(255,255,255,0.5)]'
+        className='list rounded-box justify-between w-full h-full min-h-0 px-7 py-7 rounded-[30px] bg-[#fff8eb] shadow-[15px_15px_30px_#d7cdbd,-15px_-15px_30px_rgb(255,255,255,0.5)]'
         flex={col ? "flex-col" : "flex-row"}
       >
         {/* <ul className='list bg-base-100 rounded-box shadow-md flex-row justify-between'> */}
@@ -56,7 +56,7 @@ const TopGenres = () => {
             </ul>
           </div>
         </li>
-        <div className='divider-horizontal border'></div>
+        <div className='divider-horizontal border-2 rounded-full border-rounded border-base-200'></div>
         <li className='list-row flex flex-col sm:flex-row flex-1 items-center'>
           <div className='text-6xl font-normal opacity-30 font-paragraph w-fit flex min-w-[75px] xl:min-w-0'>
             <span className='block xl:hidden 2xl:block'>0</span>2
@@ -86,7 +86,7 @@ const TopGenres = () => {
             </ul>
           </div>
         </li>
-        <div className='divider-horizontal border'></div>
+        <div className='divider-horizontal border-2 rounded-full border-base-200'></div>
 
         <li className='list-row flex flex-col sm:flex-row flex-1 items-center'>
           <div className='text-6xl font-normal opacity-30 font-paragraph w-fit flex min-w-[75px] xl:min-w-0'>
