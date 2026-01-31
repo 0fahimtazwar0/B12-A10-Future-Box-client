@@ -5,13 +5,16 @@ const Navbar = () => {
   const list = (
     <>
       <li>
-        <a>Item 1</a>
+        <a>Home</a>
       </li>
       <li>
-        <a>Item 2</a>
+        <a>All Books</a>
       </li>
       <li>
-        <a>Item 3</a>
+        <a>Add Book</a>
+      </li>
+      <li>
+        <a>My Books</a>
       </li>
     </>
   );
