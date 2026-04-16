@@ -1,20 +1,21 @@
 import React from "react";
 import { LiquidButton } from "./ui/shadcn-io/liquid-button";
+import { NavLink } from "react-router";
 
 const Navbar = () => {
   const list = (
     <>
       <li>
-        <a>Home</a>
+        <NavLink to='/'>Home</NavLink>
       </li>
       <li>
-        <a>All Books</a>
+        <NavLink to='/all-books'>All Books</NavLink>
       </li>
       <li>
-        <a>Add Book</a>
+        <NavLink to='/create-books'>Create Books</NavLink>
       </li>
       <li>
-        <a>My Books</a>
+        <NavLink to='/my-books'>My Books</NavLink>
       </li>
     </>
   );
@@ -57,7 +58,7 @@ const Navbar = () => {
           <ul className='menu menu-horizontal px-1'>{list}</ul>
         </div>
         <div className='navbar-end'>
-          <a className='btn'>Button</a>
+          <a className='btn'>Login</a>
         </div>
       </div>
     </div>

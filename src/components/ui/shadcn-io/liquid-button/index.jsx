@@ -12,7 +12,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "hover:text-primary-foreground !bg-transparent [--liquid-button-color:var(--primary)]",
+          "hover:text-background !bg-transparent [--liquid-button-color:var(--accent)]",
         outline:
           "border !bg-background dark:!bg-input/30 dark:border-input [--liquid-button-color:var(--primary)]",
         secondary:
@@ -29,7 +29,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 function LiquidButton({ className, variant, size, ...props }) {
