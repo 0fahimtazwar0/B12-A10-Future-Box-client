@@ -6,26 +6,28 @@ import { SparklesText } from "/src/components/ui/sparkles-text";
 import { Link } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
 
-const Login = () => {
-  const { user, login } = use(AuthContext);
-  const handleLogin = (e) => {
+const Register = () => {
+  const { user, createUser } = use(AuthContext);
+  const handleRegister = (e) => {
     e.preventDefault();
     console.log(e.target);
     const form = e.target;
+    const name = form.name.value;
     const email = form.email.value;
+    const photoURL = form.photoURL.value;
     const password = form.password.value;
-    console.log(email, password);
-    login(email, password);
+    // console.log({ name, email, photoURL, password });
+    createUser(email, password, name, photoURL);
   };
 
   return (
     <div className='h-[90vh] flex flex-col md:flex-row items-center justify-center gap-0 md:gap-15 '>
-      <div className='flex flex-col justify-between h-55 w-full max-w-sm md:w-fit'>
+      <div className='flex flex-col justify-between h-55 w-fit min-w-sm md:w-fit'>
         <img src={flyingBook} alt='Flying-Book' className='w-24 select-none' />
         <div className='flex flex-col gap-2.5'>
           <SparklesText>
             <AuroraText className='font-heading section-heading font-light'>
-              Login Now
+              Register Now
             </AuroraText>
           </SparklesText>
           <AuroraText className='font-heading text-xl'>
@@ -40,13 +42,43 @@ const Login = () => {
       </div>
 
       <div className='card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl mt-10'>
-        <form className='card-body' onSubmit={handleLogin}>
+        <form onSubmit={handleRegister} className='card-body'>
           <fieldset className='fieldset flex flex-col gap-3'>
+            <div className='flex flex-col gap-1'>
+              <label className='text-sm' htmlFor='name'>
+                Name
+              </label>
+              <label className='input validator border'>
+                <svg
+                  className='h-[1em] opacity-50'
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 24 24'
+                >
+                  <g
+                    strokeLinejoin='round'
+                    strokeLinecap='round'
+                    strokeWidth='2.5'
+                    fill='none'
+                    stroke='currentColor'
+                  >
+                    <path d='M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2'></path>
+                    <circle cx='12' cy='7' r='4'></circle>
+                  </g>
+                </svg>
+                <input
+                  name='name'
+                  type='text'
+                  required
+                  placeholder='John Doe'
+                  id='name'
+                />
+              </label>
+            </div>
             <div className='flex flex-col gap-1'>
               <label className='text-sm' htmlFor='email'>
                 Email
               </label>
-              <label className='input has-user-invalid:validator border'>
+              <label className='input validator border'>
                 <svg
                   className='h-[1em] opacity-50'
                   xmlns='http://www.w3.org/2000/svg'
@@ -64,6 +96,7 @@ const Login = () => {
                   </g>
                 </svg>
                 <input
+                  name='email'
                   type='email'
                   placeholder='mail@site.com'
                   required
@@ -75,10 +108,44 @@ const Login = () => {
               </div>
             </div>
             <div className='flex flex-col gap-1'>
+              <label className='text-sm' htmlFor='photoURL'>
+                Photo URL
+              </label>
+              <label className='input validator border'>
+                <svg
+                  className='h-[1em] opacity-50'
+                  xmlns='http://www.w3.org/2000/svg'
+                  viewBox='0 0 24 24'
+                >
+                  <g
+                    strokeLinejoin='round'
+                    strokeLinecap='round'
+                    strokeWidth='2.5'
+                    fill='none'
+                    stroke='currentColor'
+                  >
+                    <path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'></path>
+                    <path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'></path>
+                  </g>
+                </svg>
+                <input
+                  name='photoURL'
+                  type='url'
+                  required
+                  placeholder='https://'
+                  defaultValue='https://'
+                  pattern='^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9\-].*[a-zA-Z0-9])?\.)+[a-zA-Z].*$'
+                  title='Must be valid URL'
+                  id='photoURL'
+                />
+              </label>
+              <p className='validator-hint hidden'>Must be valid URL</p>
+            </div>
+            <div className='flex flex-col gap-1'>
               <label className='text-sm' htmlFor='password'>
                 Password
               </label>
-              <label className='input border'>
+              <label className='input validator border'>
                 <svg
                   className='h-[1em] opacity-50'
                   xmlns='http://www.w3.org/2000/svg'
@@ -101,20 +168,26 @@ const Login = () => {
                   </g>
                 </svg>
                 <input
+                  name='password'
                   type='password'
                   required
                   placeholder='••••••••••••••••••'
+                  minLength='6'
+                  pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}'
+                  title='Must be more than 8 characters, including number, lowercase letter, uppercase letter'
                   id='password'
                 />
               </label>
+              <p className='validator-hint hidden'>
+                Must be more than 8 characters, including
+                <br />
+                At least one number <br />
+                At least one lowercase letter <br />
+                At least one uppercase letter
+              </p>
             </div>
-            <div>
-              <a className='hover:text-accent link link-hover'>
-                Forgot password?
-              </a>
-            </div>
-            <button className='btn btn-neutral mt-4' type='submit'>
-              Login
+            <button type='submit' className='btn btn-neutral mt-4'>
+              Register
             </button>
           </fieldset>
           <div className='divider h-1'>Or</div>
@@ -149,12 +222,12 @@ const Login = () => {
             Login with Google
           </button>
           <p className='mt-3.5'>
-            Don't have an account?{" "}
+            Already have an account?{" "}
             <Link
-              to='/register'
+              to='/login'
               className='hover:text-accent link link-hover font-semibold'
             >
-              Register
+              Login
             </Link>
           </p>
         </form>
@@ -163,4 +236,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

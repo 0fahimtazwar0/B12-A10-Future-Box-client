@@ -6,6 +6,7 @@ import AllBooks from "../pages/AllBooks";
 import CreateBooks from "../pages/CreateBooks";
 import MyBooks from "../pages/MyBooks";
 import Login from "../pages/Login";
+import Register from "../pages/register";
 
 const Router = createBrowserRouter([
   {
@@ -13,10 +14,11 @@ const Router = createBrowserRouter([
     Component: Root,
     children: [
       { index: true, Component: Home },
-      { path: "all-books", Component: AllBooks },
+      { path: "books", Component: AllBooks },
       { path: "create-books", Component: CreateBooks },
       { path: "my-books", Component: MyBooks },
       { path: "login", Component: Login },
+      { path: "register", Component: Register },
     ],
   },
 ]);

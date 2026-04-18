@@ -74,9 +74,14 @@ const Toggles = () => {
   ];
   return (
     <div className='flex flex-wrap items-center gap-2'>
-      {genres.map((name) => {
+      {genres.map((name, key) => {
         return (
-          <Toggle variant='outline' aria-label='Toggle default' size='default'>
+          <Toggle
+            key={key}
+            variant='outline'
+            aria-label='Toggle default'
+            size='default'
+          >
             {name}
           </Toggle>
         );

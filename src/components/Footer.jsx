@@ -10,7 +10,7 @@ const Footer = () => {
           <p className='font-semibold'>
             Book Haven Inc Ltd.
             <br />
-            <p className='opacity-60'>Where Stories Find Their Home</p>
+            <span className='opacity-60'>Where Stories Find Their Home</span>
           </p>
         </aside>
         <nav>

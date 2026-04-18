@@ -1,15 +1,25 @@
-import React from "react";
+import React, { use } from "react";
 import { LiquidButton } from "./ui/shadcn-io/liquid-button";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
+import { AuthContext } from "../provider/AuthProvider";
+import { ShimmerButton } from "/src/components/ui/shimmer-button";
+import { TbUserPlus } from "react-icons/tb";
+import { LuLogIn, LuLogOut } from "react-icons/lu";
 
 const Navbar = () => {
+  let navigate = useNavigate();
+
+  const { user, logout } = use(AuthContext);
+  if (user) {
+    console.log(user.photoURL);
+  }
   const list = (
     <>
       <li>
         <NavLink to='/'>Home</NavLink>
       </li>
       <li>
-        <NavLink to='/all-books'>All Books</NavLink>
+        <NavLink to='/books'>All Books</NavLink>
       </li>
       <li>
         <NavLink to='/create-books'>Create Books</NavLink>
@@ -20,9 +30,13 @@ const Navbar = () => {
     </>
   );
 
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <div className='bg-base-100/30 shadow-sm backdrop-blur-2xl sticky sm:fixed z-50 top-0 w-full box-border h-16'>
-      <div className='navbar max-w-(--max-width) mx-auto'>
+      <div className='navbar max-w-(--max-width) mx-auto h-16'>
         <div className='navbar-start'>
           <div className='dropdown'>
             <div tabIndex={0} role='button' className='btn btn-ghost lg:hidden'>
@@ -57,10 +71,40 @@ const Navbar = () => {
         <div className='navbar-center hidden lg:flex'>
           <ul className='menu menu-horizontal px-1'>{list}</ul>
         </div>
-        <div className='navbar-end'>
-          <Link className='btn' to='/login'>
-            Login
-          </Link>
+        <div className='navbar-end flex justify-end items-center gap-5'>
+          {user ? (
+            <>
+              <div className='avatar cursor-pointer h-9'>
+                <div className='ring-neutral ring-offset-base-100 rounded-full ring-2 ring-offset-2'>
+                  <img src={user.photoURL} />
+                </div>
+              </div>
+              <ShimmerButton
+                className='btn px-0 md:px-5 aspect-square md:aspect-auto h-11'
+                onClick={handleLogout}
+              >
+                <span className='hidden md:block'>Logout</span>
+                <LuLogOut className='text-xl block md:hidden' />
+              </ShimmerButton>
+            </>
+          ) : (
+            <>
+              <ShimmerButton
+                className='btn px-0 md:px-5 aspect-square md:aspect-auto h-11'
+                onClick={() => navigate("/login")}
+              >
+                <span className='hidden md:block'>Login</span>
+                <LuLogIn className='text-xl block md:hidden' />
+              </ShimmerButton>
+              <ShimmerButton
+                className='btn px-0 md:px-5 aspect-square md:aspect-auto h-11'
+                onClick={() => navigate("/register")}
+              >
+                <span className='hidden md:block'>Register</span>
+                <TbUserPlus className='text-xl block md:hidden' />
+              </ShimmerButton>
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "hover:text-background !bg-transparent [--liquid-button-color:var(--accent)]",
+          "hover:text-background !bg-transparent [--liquid-button-color:#924ECE]",
         outline:
           "border !bg-background dark:!bg-input/30 dark:border-input [--liquid-button-color:var(--primary)]",
         secondary:
