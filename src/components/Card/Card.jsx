@@ -6,45 +6,10 @@ import { InteractiveHoverButton } from "/src/components/ui/interactive-hover-but
 import { MagicCard } from "/src/components/ui/magic-card";
 
 import { cn } from "@/lib/utils";
+import Stars from "../Stars";
 
 const Card = ({ single }) => {
   const { title, rating, author, coverImage, genre } = single;
-
-  const starStyles = "w-6 h-6 text-yellow-400";
-
-  const fullStarNum = Math.trunc(rating);
-
-  let halfStarNum = 0;
-  if (fullStarNum != rating) {
-    halfStarNum = 1;
-  }
-
-  const emptyStarNum = 5 - (fullStarNum + halfStarNum);
-
-  const fullStars = [];
-  for (let i = 0; i < fullStarNum; i++) {
-    fullStars.push(<FaStar key={5645 + i} className={starStyles} />);
-  }
-
-  const halfStars = [];
-  for (let i = 0; i < halfStarNum; i++) {
-    fullStars.push(
-      <FaRegStarHalfStroke
-        key={5645 + fullStarNum + i}
-        className={starStyles}
-      />
-    );
-  }
-
-  const emptyStars = [];
-  for (let i = 0; i < emptyStarNum; i++) {
-    fullStars.push(
-      <FaRegStar
-        key={55 + fullStarNum + halfStarNum + i}
-        className={starStyles}
-      />
-    );
-  }
 
   return (
     <MagicCard
@@ -61,7 +26,7 @@ const Card = ({ single }) => {
         <div className='group relative w-fit rounded-full px-3 py-1 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]'>
           <span
             className={cn(
-              "animate-gradient absolute inset-0 block h-full w-full rounded-[inherit] bg-linear-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-size-[300%_100%] p-[2px]"
+              "animate-gradient absolute inset-0 block h-full w-full rounded-[inherit] bg-linear-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-size-[300%_100%] p-[2px]",
             )}
             style={{
               WebkitMask:
@@ -85,11 +50,7 @@ const Card = ({ single }) => {
         </div>
 
         <div className='flex items-center mt-2.5 mb-5'>
-          <div className='flex items-center space-x-1 rtl:space-x-reverse'>
-            {fullStars}
-            {halfStars}
-            {emptyStars}
-          </div>
+          <Stars rating={rating}></Stars>
           <span className='bg-purple-100 text-purple-800 border border-purple-200 flex justify-center items-center font-semibold px-2.5 py-0.5 rounded-sm ms-3'>
             {rating}
           </span>

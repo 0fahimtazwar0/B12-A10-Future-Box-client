@@ -3,10 +3,12 @@ import { SparklesText } from "/src/components/ui/sparkles-text";
 import { ShineBorder } from "/src/components/ui/shine-border";
 import { AuroraText } from "/src/components/ui/aurora-text";
 
-const SectionTitle = ({ children, className }) => {
+const SectionTitle = ({ children, className, boolean }) => {
   return (
     <div className={`relative py-2.5 rounded-full ${className}`}>
-      <SparklesText className='font-heading section-heading font-light'>
+      <SparklesText
+        className={`font-heading ${boolean ? " " : "section-heading"} font-light`}
+      >
         <AuroraText>{children}</AuroraText>
       </SparklesText>
       <div className='relative w-full'>
