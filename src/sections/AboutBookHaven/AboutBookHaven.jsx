@@ -45,7 +45,7 @@ const AboutBookHaven = () => {
           </div>
         </div>
         <div className='flex items-center text-justify h-full'>
-          <p>
+          <span>
             <h1 className='text-4xl font-heading font-medium inline'>
               Book Haven{" "}
             </h1>
@@ -61,7 +61,7 @@ const AboutBookHaven = () => {
             love to read, share, and explore ideas. Every story has a home here,
             and every reader can find something they connect with. Book Haven —
             where stories live and readers belong.
-          </p>
+          </span>
         </div>
       </div>
     </div>

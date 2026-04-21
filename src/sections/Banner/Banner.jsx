@@ -21,7 +21,7 @@ const Banner = () => {
           className='w-44 sm:w-54 md:w-64 xl:w-80 flex lg:absolute top-[-200px] right-0 2xl:right-15 select-none float-img mx-auto '
         />
         <div className='text-center lg:text-left font-heading size-heading font-semibold '>
-          <p className='flex items-center justify-center lg:justify-start'>
+          <div className='flex items-center justify-center lg:justify-start'>
             A&nbsp;
             <BlurFade duration={1} direction='right' inView>
               <SparklesText className='text-primary font-extrabold size-heading'>
@@ -29,7 +29,7 @@ const Banner = () => {
               </SparklesText>
             </BlurFade>
             &nbsp;Library
-          </p>
+          </div>
           <div className='flex items-center justify-center lg:justify-end'>
             for&nbsp;
             <BlurFade duration={1} direction='right' inView>
