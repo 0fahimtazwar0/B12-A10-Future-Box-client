@@ -23,23 +23,45 @@ const Card = ({ single }) => {
         </div>
       </div>
       <div className=' pb-5 mt-7  w-full flex flex-col flex-1'>
-        <div className='group relative w-fit rounded-full px-3 py-1 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]'>
-          <span
-            className={cn(
-              "animate-gradient absolute inset-0 block h-full w-full rounded-[inherit] bg-linear-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-size-[300%_100%] p-[2px]",
-            )}
-            style={{
-              WebkitMask:
-                "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-              WebkitMaskComposite: "destination-out",
-              mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-              maskComposite: "subtract",
-              WebkitClipPath: "padding-box",
-            }}
-          ></span>
-          <AnimatedGradientText className='font-bold text-sm'>
-            {genre}
-          </AnimatedGradientText>
+        <div className='flex gap-2'>
+          <div className='group relative w-fit rounded-full px-3 py-1 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]'>
+            <span
+              className={cn(
+                "animate-gradient absolute inset-0 block h-full w-full rounded-[inherit] bg-linear-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-size-[300%_100%] p-[2px]",
+              )}
+              style={{
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "destination-out",
+                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                maskComposite: "subtract",
+                WebkitClipPath: "padding-box",
+              }}
+            ></span>
+            <AnimatedGradientText className='font-bold text-sm'>
+              {genre[0]}
+            </AnimatedGradientText>
+          </div>
+          {genre[1] && (
+            <div className='group relative w-fit rounded-full px-3 py-1 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]'>
+              <span
+                className={cn(
+                  "animate-gradient absolute inset-0 block h-full w-full rounded-[inherit] bg-linear-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-size-[300%_100%] p-[2px]",
+                )}
+                style={{
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "destination-out",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "subtract",
+                  WebkitClipPath: "padding-box",
+                }}
+              ></span>
+              <AnimatedGradientText className='font-bold text-sm'>
+                {`+${genre.length - 1}`}
+              </AnimatedGradientText>
+            </div>
+          )}
         </div>
 
         <div className='mt-2.5'>

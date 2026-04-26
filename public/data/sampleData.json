@@ -2,7 +2,7 @@
   {
     "title": "To Kill a Mockingbird",
     "author": "Harper Lee",
-    "genre": "Fiction",
+    "genre": ["Historical Fiction"],
     "rating": "5",
     "summary": "A powerful story about racial injustice and moral growth in the American South.",
     "coverImage": "https://m.media-amazon.com/images/I/81aY1lxk+9L._AC_UF1000,1000_QL80_.jpg",
@@ -11,7 +11,7 @@
   {
     "title": "1984",
     "author": "George Orwell",
-    "genre": "Dystopian",
+    "genre": ["Science Fiction"],
     "rating": "5",
     "summary": "A chilling depiction of totalitarianism, surveillance, and loss of freedom.",
     "coverImage": "https://m.media-amazon.com/images/I/71wANojhEKL._AC_UF1000,1000_QL80_.jpg",
@@ -20,7 +20,7 @@
   {
     "title": "A Song of Ice and Fire",
     "author": "George R. R. Martin",
-    "genre": "Fantasy",
+    "genre": ["Fantasy", "Adventure"],
     "rating": "5",
     "summary": "The epic fantasy saga of noble families, political intrigue, and the looming threat beyond the Wall.",
     "coverImage": "https://upload.wikimedia.org/wikipedia/en/thumb/d/dc/A_Song_of_Ice_and_Fire_book_collection_box_set_cover.jpg/250px-A_Song_of_Ice_and_Fire_book_collection_box_set_cover.jpg",
@@ -29,7 +29,7 @@
   {
     "title": "The Hobbit",
     "author": "J.R.R. Tolkien",
-    "genre": "Fantasy",
+    "genre": ["Fantasy", "Adventure"],
     "rating": "5",
     "summary": "Bilbo Baggins embarks on an unexpected journey to recover a lost treasure.",
     "coverImage": "https://m.media-amazon.com/images/I/712cDO7d73L._AC_UF1000,1000_QL80_.jpg",
@@ -38,7 +38,7 @@
   {
     "title": "Pride and Prejudice",
     "author": "Jane Austen",
-    "genre": "Romance",
+    "genre": ["Romance", "Historical Fiction"],
     "rating": "4.7",
     "summary": "Elizabeth Bennet navigates love, pride, and social expectations.",
     "coverImage": "https://m.media-amazon.com/images/I/81Scutrtj4L._UF1000,1000_QL80_.jpg",
@@ -47,7 +47,7 @@
   {
     "title": "The Catcher in the Rye",
     "author": "J.D. Salinger",
-    "genre": "Fiction",
+    "genre": ["Young Adult"],
     "rating": "4",
     "summary": "Holden Caulfield recounts his experiences in New York after leaving school.",
     "coverImage": "https://m.media-amazon.com/images/I/8125BDk3l9L._AC_UF1000,1000_QL80_.jpg",
@@ -56,7 +56,7 @@
   {
     "title": "Harry Potter and the Sorcerer's Stone",
     "author": "J.K. Rowling",
-    "genre": "Fantasy",
+    "genre": ["Fantasy", "Young Adult", "Adventure"],
     "rating": "5",
     "summary": "A young boy discovers he's a wizard and enters a magical world.",
     "coverImage": "https://m.media-amazon.com/images/I/91wKDODkgWL._AC_UF1000,1000_QL80_.jpg",
@@ -65,7 +65,7 @@
   {
     "title": "The Alchemist",
     "author": "Paulo Coelho",
-    "genre": "Fiction",
+    "genre": ["Adventure", "Self-Help"],
     "rating": "4.6",
     "summary": "A shepherd boy travels in search of his personal legend.",
     "coverImage": "https://m.media-amazon.com/images/I/71+2-t7M35L._AC_UF1000,1000_QL80_.jpg",
@@ -74,7 +74,7 @@
   {
     "title": "The Fault in Our Stars",
     "author": "John Green",
-    "genre": "Young Adult",
+    "genre": ["Young Adult", "Romance"],
     "rating": "4.5",
     "summary": "Two teenagers with cancer embark on a heartbreaking, beautiful journey.",
     "coverImage": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a9/The_Fault_in_Our_Stars.jpg/250px-The_Fault_in_Our_Stars.jpg",
@@ -83,7 +83,7 @@
   {
     "title": "Becoming",
     "author": "Michelle Obama",
-    "genre": "Memoir",
+    "genre": ["Autobiography"],
     "rating": "4.8",
     "summary": "The former First Lady reflects on her life and journey.",
     "coverImage": "https://m.media-amazon.com/images/I/81cJTmFpG-L._AC_UF1000,1000_QL80_.jpg",
@@ -92,7 +92,7 @@
   {
     "title": "Sapiens: A Brief History of Humankind",
     "author": "Yuval Noah Harari",
-    "genre": "Non-Fiction",
+    "genre": ["History", "Science"],
     "rating": "4.7",
     "summary": "A sweeping exploration of human history and evolution.",
     "coverImage": "https://m.media-amazon.com/images/I/713jIoMO3UL._UF1000,1000_QL80_.jpg",
@@ -101,7 +101,7 @@
   {
     "title": "The Da Vinci Code",
     "author": "Dan Brown",
-    "genre": "Thriller",
+    "genre": ["Mystery", "Thriller", "Adventure"],
     "rating": "4.3",
     "summary": "A symbologist unravels a conspiracy hidden in famous artworks.",
     "coverImage": "https://upload.wikimedia.org/wikipedia/en/6/6b/DaVinciCode.jpg",
@@ -110,7 +110,7 @@
   {
     "title": "The Kite Runner",
     "author": "Khaled Hosseini",
-    "genre": "Drama",
+    "genre": ["Historical Fiction"],
     "rating": "4.8",
     "summary": "A powerful story of friendship, guilt, and redemption.",
     "coverImage": "https://bookowlsbd.com/cdn/shop/files/kiterunner-jjpg_trans_NvBQzQNjv4Bqr-7O72qaIw6JcGx7YfRv5hjc_tug_KIozTYR1GUHPpA.webp?v=1711192176",
@@ -119,7 +119,7 @@
   {
     "title": "Atomic Habits",
     "author": "James Clear",
-    "genre": "Self-Help",
+    "genre": ["Self-Help"],
     "rating": "5",
     "summary": "A practical guide to forming good habits and breaking bad ones.",
     "coverImage": "https://m.media-amazon.com/images/I/81kg51XRc1L._AC_UF1000,1000_QL80_.jpg",
@@ -128,7 +128,7 @@
   {
     "title": "The Subtle Art of Not Giving a F*ck",
     "author": "Mark Manson",
-    "genre": "Self-Help",
+    "genre": ["Self-Help"],
     "rating": "4.2",
     "summary": "A counterintuitive approach to living a meaningful life.",
     "coverImage": "https://m.media-amazon.com/images/I/71QKQ9mwV7L._AC_UF1000,1000_QL80_.jpg",
@@ -137,7 +137,7 @@
   {
     "title": "The Girl on the Train",
     "author": "Paula Hawkins",
-    "genre": "Mystery/Thriller",
+    "genre": ["Mystery", "Thriller"],
     "rating": "4.3",
     "summary": "A woman becomes entangled in a missing person's investigation.",
     "coverImage": "https://m.media-amazon.com/images/I/81-Q2OAVeXL._AC_UF1000,1000_QL80_.jpg",

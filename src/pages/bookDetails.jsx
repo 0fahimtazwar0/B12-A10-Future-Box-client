@@ -7,17 +7,24 @@ import { cn } from "@/lib/utils";
 import { FaRegStar, FaRegStarHalfStroke, FaStar } from "react-icons/fa6";
 import Stars from "../components/Stars";
 import SectionTitle from "../components/SectionTitle";
+import podiumImg from "/src/assets/podium.png";
 
 const bookDetails = () => {
   const rating = 4.7;
   return (
     <div className='flex flex-col gap-10 w-fit max-w-[1440px] mt-24 mx-auto'>
       <div className='grid grid-cols-2 gap-10 w-fit mx-auto'>
-        <img
-          src='https://static.vecteezy.com/system/resources/thumbnails/060/843/811/small/close-up-of-raindrops-on-leaves-hd-background-luxury-hd-wallpaper-image-trendy-background-illustration-free-photo.jpg'
-          alt='Book Img'
-          className='rounded-xl h-96 w-lg object-cover'
-        />
+        <div className='w-fit mt-20 mx-auto'>
+          <div className='book-container float-img'>
+            <div className='book'>
+              <img
+                alt='Book Image'
+                src='https://upload.wikimedia.org/wikipedia/en/thumb/d/dc/A_Song_of_Ice_and_Fire_book_collection_box_set_cover.jpg/250px-A_Song_of_Ice_and_Fire_book_collection_box_set_cover.jpg'
+              />
+            </div>
+          </div>
+          <img src={podiumImg} className='w-md' />
+        </div>
         <div className='flex flex-col gap-5'>
           <button className='btn btn-neutral btn-ghost rounded-full justify-start '>
             <IoMdArrowRoundBack className='text-xl' />

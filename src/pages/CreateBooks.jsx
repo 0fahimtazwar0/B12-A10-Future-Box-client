@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { BorderBeam } from "/src/components/ui/border-beam";
 import { Toggle } from "@/components/ui/toggle";
 import { Slider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { AuthContext } from "../provider/AuthProvider";
 
 const CreateBooks = () => {
+  const { user } = use(AuthContext);
   // image link vs image file
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
@@ -32,20 +34,31 @@ const CreateBooks = () => {
   async function isImage(url) {
     console.log("loading start");
     setImageLoading(true);
-    try {
-      const res = await fetch(url, {
-        method: "HEAD",
-        signal: AbortSignal.timeout(3000),
-      });
-      const type = res.headers.get("content-type") || "";
-      return res.ok && type.startsWith("image/");
-    } catch {
-      alert("image url not found ❌");
+    return new Promise((resolve) => {
+      const img = new Image();
 
-      return false;
-    }
+      const cleanup = (result) => {
+        clearTimeout(timeout);
+        img.onload = null;
+        img.onerror = null;
+        img.src = "";
+        resolve(result);
+      };
+
+      const timeout = setTimeout(() => {
+        alert("image url not found ❌");
+        cleanup(false);
+      }, 2000);
+
+      img.onload = () => cleanup(true);
+      img.onerror = () => {
+        alert("image url not found ❌");
+        cleanup(false);
+      };
+
+      img.src = url;
+    });
   }
-
   const [urlValid, setUrlValid] = useState(null);
 
   useEffect(() => {
@@ -64,10 +77,10 @@ const CreateBooks = () => {
     };
   }, [text]);
   // genres
-  const [genreValues, setGenreValues] = useState([]);
+  const [genre, setGenre] = useState([]);
   const [genreWarning, setGenreWarning] = useState(false);
 
-  const genres = [
+  const genreList = [
     "Fantasy",
     "Science Fiction",
     "Romance",
@@ -96,13 +109,13 @@ const CreateBooks = () => {
   const handleCreateBookForm = async (e) => {
     e.preventDefault();
     // e.stopPropagation();
-    if (!genreValues.length) {
+    if (!genre.length) {
       setGenreWarning(true);
       window.addEventListener("click", () => setGenreWarning(false), {
         once: true,
       });
 
-      console.log(genreValues);
+      console.log(genre);
       return;
     }
     if (text) {
@@ -113,24 +126,81 @@ const CreateBooks = () => {
         alert("image url not found ❌");
         return;
       } else {
-        console.log(e.target.bookName.value);
-        console.log(e.target.rating.value);
-        console.log(e.target.authorName.value);
-        console.log(genreValues);
-        console.log(e.target.imageUrl.value);
+        const title = e.target.bookName.value;
+        const rating = e.target.rating.value;
+        const author = e.target.authorName.value;
+        console.log(genre);
+        const summary = e.target.summary.value;
+        const coverImage = e.target.imageUrl.value;
+        const newBook = {
+          title,
+          author,
+          genre,
+          rating,
+          summary,
+          coverImage,
+          userEmail: user?.email,
+        };
+
+        fetch("http://localhost:3000/books", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newBook),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("after saving book", data);
+            e.target.reset();
+          });
       }
     } else {
-      console.log(e.target.bookName.value);
-      console.log(e.target.rating.value);
-      console.log(e.target.authorName.value);
-      console.log(genreValues);
-      console.log(file);
+      const title = e.target.bookName.value;
+      const rating = e.target.rating.value;
+      const author = e.target.authorName.value;
+      const summary = e.target.summary.value;
+      // console.log(genre);
+      // console.log(file);
+
+      const imgbbAPI = "4f580ae20bff203b1a9b2828e548fda5";
+      const imgData = new FormData();
+      imgData.append("image", file);
+      fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPI}`, {
+        method: "POST",
+        body: imgData,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          const newBook = {
+            title,
+            author,
+            genre,
+            rating,
+            summary,
+            coverImage: data.data.url,
+            userEmail: user?.email,
+          };
+          fetch("http://localhost:3000/books", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(newBook),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log("after saving book", data);
+              e.target.reset();
+            });
+        });
     }
   };
-
   const handleReset = () => {
-    setGenreValues([]);
+    setGenre([]);
     setRating(0);
+    setText("");
   };
 
   return (
@@ -160,12 +230,12 @@ const CreateBooks = () => {
             </label>
             <div className='flex flex-1 gap-2.5'>
               <Slider
-                defaultValue={[0]}
+                value={[rating]}
                 max={5}
                 step={0.1}
                 className='mx-auto w-full flex-1'
                 name='rating'
-                onChange={(e) => setRating(e.target.value)}
+                onValueChange={(val) => setRating(val[0])}
               />{" "}
               <p className='flex bg-neutral text-white font-medium px-1 rounded-sm text-sm justify-center items-center w-8'>
                 {rating}
@@ -177,6 +247,7 @@ const CreateBooks = () => {
               Author:
             </label>
             <input
+              id='authorName'
               name='authorName'
               type='text'
               placeholder='e.g.Leo Tolstoy'
@@ -191,7 +262,7 @@ const CreateBooks = () => {
             <input
               id='creatorName'
               type='text'
-              value='0fahimtazwar0'
+              value={user?.email}
               className='input border w-full'
               readOnly
             />
@@ -217,14 +288,14 @@ const CreateBooks = () => {
               </div>
               <ToggleGroup
                 type='multiple'
-                value={genreValues}
-                onValueChange={setGenreValues}
+                value={genre}
+                onValueChange={setGenre}
                 spacing={2}
                 className='flex flex-wrap'
                 variant='outline'
                 size='default'
               >
-                {genres.map((name, key) => {
+                {genreList.map((name, key) => {
                   return (
                     <ToggleGroupItem value={name} key={key}>
                       {name}
@@ -240,9 +311,11 @@ const CreateBooks = () => {
             </label>
             <textarea
               id='summary'
+              name='summary'
               type='textarea'
-              placeholder='Additional information about the book'
-              className='input border w-full h-full min-h-28'
+              placeholder='Summary and Additional information about the book'
+              className='input border w-full h-full min-h-28 whitespace-pre-wrap'
+              required
             />
           </div>
           <div className='flex flex-col gap-2.5 mt-10 col-span-2 justify-center'>
@@ -255,7 +328,7 @@ const CreateBooks = () => {
                   onChange={handleFileChange}
                   className='file-input file-input-md w-full border border-[#CDC4B9] h-fit flex-1 file-input-neutral'
                   id='fileInput'
-                  required={!text && genreValues.length}
+                  required={!text && genre.length}
                   name='fileInput'
                 />
               </div>
@@ -295,7 +368,7 @@ const CreateBooks = () => {
                     value={text}
                     onChange={handleTextChange}
                     disabled={imageLoading}
-                    required={!file && genreValues.length}
+                    required={!file && genre.length}
                   />
                 </label>
               </div>
