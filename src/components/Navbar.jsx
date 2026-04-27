@@ -19,7 +19,7 @@ const Navbar = () => {
         <NavLink to='/all-books'>All Books</NavLink>
       </li>
       <li>
-        <NavLink to='/create-books'>Create Books</NavLink>
+        <NavLink to='/create-book'>Create Book</NavLink>
       </li>
       <li>
         <NavLink to='/my-books'>My Books</NavLink>
@@ -117,7 +117,7 @@ const Navbar = () => {
       </div>
       <dialog id='my_modal_1' className='modal'>
         <div className='modal-box'>
-          <div className='flex gap-8'>
+          <div className='flex flex-col sm:flex-row gap-8'>
             <div className='avatar h-20'>
               <div className='ring-neutral ring-offset-base-100 rounded-full ring-2 ring-offset-2'>
                 <img src={user?.photoURL} referrerPolicy='no-referrer' />

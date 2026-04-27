@@ -4,12 +4,17 @@ import { FaRegStar, FaRegStarHalfStroke, FaStar } from "react-icons/fa6";
 import { AnimatedGradientText } from "/src/components/ui/animated-gradient-text";
 import { InteractiveHoverButton } from "/src/components/ui/interactive-hover-button";
 import { MagicCard } from "/src/components/ui/magic-card";
-
 import { cn } from "@/lib/utils";
 import Stars from "../Stars";
+import { useNavigate } from "react-router";
 
 const Card = ({ single }) => {
-  const { title, rating, author, coverImage, genre } = single;
+  const { _id, title, rating, author, coverImage, genre } = single;
+  let navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/book-details/${_id}`);
+  };
 
   return (
     <MagicCard
@@ -79,7 +84,9 @@ const Card = ({ single }) => {
         </div>
         <div className='flex flex-1'></div>
         <div className='flex w-full justify-stretch items-stretch'>
-          <InteractiveHoverButton>View Details</InteractiveHoverButton>
+          <InteractiveHoverButton onClick={handleViewDetails}>
+            View Details
+          </InteractiveHoverButton>
         </div>
       </div>
     </MagicCard>

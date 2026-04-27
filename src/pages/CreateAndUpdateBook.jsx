@@ -1,35 +1,51 @@
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { BorderBeam } from "/src/components/ui/border-beam";
 import { Toggle } from "@/components/ui/toggle";
 import { Slider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { AuthContext } from "../provider/AuthProvider";
+import { useLocation, useParams } from "react-router";
 
-const CreateBooks = () => {
+const CreateAndUpdateBook = ({ updating }) => {
+  const { id } = useParams();
   const { user } = use(AuthContext);
-  // image link vs image file
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
-
-  const handleTextChange = (e) => {
-    setText(e.target.value);
-    setFile(null); // clear file
-
-    // also reset file input element
-    document.getElementById("fileInput").value = "";
-  };
-
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile || null);
-
-    if (selectedFile) {
-      setText("");
-    }
-  };
-  // image link loading
-
+  const [genre, setGenre] = useState([]);
+  const [genreWarning, setGenreWarning] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
+  const [urlValid, setUrlValid] = useState(null);
+  const [rating, setRating] = useState(0);
+
+  const formRef = useRef(null);
+  const location = useLocation();
+  useEffect(() => {
+    formRef.current?.reset();
+  }, [location]);
+
+  useEffect(() => {
+    if (updating) {
+      fetch(`http://localhost:3000/book-details/${id}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch books");
+          return res.json();
+        })
+        .then((data) => {
+          setData(data);
+          setText(data.coverImage);
+          setGenre(data.genre);
+          setRating(data.rating);
+        })
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
+    }
+  }, []);
+
+  // image link loading
 
   async function isImage(url) {
     console.log("loading start");
@@ -59,8 +75,6 @@ const CreateBooks = () => {
       img.src = url;
     });
   }
-  const [urlValid, setUrlValid] = useState(null);
-
   useEffect(() => {
     if (!text || text === "https://") return;
 
@@ -76,9 +90,38 @@ const CreateBooks = () => {
       setUrlValid(null);
     };
   }, [text]);
+
+  if (updating && loading)
+    return <p className='text-center mt-16'>Loading...</p>;
+  if (updating && error)
+    return <p className='text-center mt-16 text-red-500'>{error}</p>;
+  if (updating) {
+    console.log("updating");
+    console.log(data);
+  } else {
+    console.log("creating");
+  }
+
+  // image link vs image file
+
+  const handleTextChange = (e) => {
+    setText(e.target.value);
+    setFile(null); // clear file
+
+    // also reset file input element
+    document.getElementById("fileInput").value = "";
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile || null);
+
+    if (selectedFile) {
+      setText("");
+    }
+  };
+
   // genres
-  const [genre, setGenre] = useState([]);
-  const [genreWarning, setGenreWarning] = useState(false);
 
   const genreList = [
     "Fantasy",
@@ -104,10 +147,9 @@ const CreateBooks = () => {
     "Cookbooks",
   ];
 
-  const [rating, setRating] = useState(0);
-
   const handleCreateBookForm = async (e) => {
     e.preventDefault();
+
     // e.stopPropagation();
     if (!genre.length) {
       setGenreWarning(true);
@@ -140,15 +182,19 @@ const CreateBooks = () => {
           summary,
           coverImage,
           userEmail: user?.email,
+          created_at: new Date().toISOString(),
         };
 
-        fetch("http://localhost:3000/books", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
+        fetch(
+          `http://localhost:3000/${updating ? `update-book/${id}` : "add-book"}`,
+          {
+            method: `${updating ? "PATCH" : "POST"}`,
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(newBook),
           },
-          body: JSON.stringify(newBook),
-        })
+        )
           .then((res) => res.json())
           .then((data) => {
             console.log("after saving book", data);
@@ -181,14 +227,18 @@ const CreateBooks = () => {
             summary,
             coverImage: data.data.url,
             userEmail: user?.email,
+            created_at: new Date().toISOString(),
           };
-          fetch("http://localhost:3000/books", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
+          fetch(
+            `http://localhost:3000/${updating ? `update-book/${id}` : "add-book"}`,
+            {
+              method: `${updating ? "PATCH" : "POST"}`,
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify(newBook),
             },
-            body: JSON.stringify(newBook),
-          })
+          )
             .then((res) => res.json())
             .then((data) => {
               console.log("after saving book", data);
@@ -198,9 +248,9 @@ const CreateBooks = () => {
     }
   };
   const handleReset = () => {
-    setGenre([]);
-    setRating(0);
-    setText("");
+    setGenre(updating ? data.genre : []);
+    setRating(updating ? data.rating : 0);
+    setText(updating ? data.coverImage : "");
   };
 
   return (
@@ -210,6 +260,7 @@ const CreateBooks = () => {
           className='flex flex-col xl:grid xl:grid-cols-2  gap-x-10 gap-y-2.5'
           onSubmit={handleCreateBookForm}
           onReset={handleReset}
+          ref={formRef}
         >
           <div className='flex items-center gap-5 '>
             <label htmlFor='bookName' className='font-semibold  min-w-26'>
@@ -222,6 +273,7 @@ const CreateBooks = () => {
               className='input border w-full'
               name='bookName'
               required
+              defaultValue={updating && data.title}
             />
           </div>
           <div className='flex items-center gap-7'>
@@ -253,6 +305,7 @@ const CreateBooks = () => {
               placeholder='e.g.Leo Tolstoy'
               className='input border w-full'
               required
+              defaultValue={updating && data.author}
             />
           </div>
           <div className='flex items-center gap-5'>
@@ -314,25 +367,24 @@ const CreateBooks = () => {
               name='summary'
               type='textarea'
               placeholder='Summary and Additional information about the book'
-              className='input border w-full h-full min-h-28 whitespace-pre-wrap'
+              className='input border w-full h-full min-h-52 whitespace-pre-wrap'
               required
+              defaultValue={updating && data.summary}
             />
           </div>
           <div className='flex flex-col gap-2.5 mt-10 col-span-2 justify-center'>
             <label className='font-semibold'>Book Image:</label>
-            <div className='flex flex-col xl:flex-row items-center xl:items-baseline'>
-              <div className='flex-1'>
-                <input
-                  type='file'
-                  accept='image/*'
-                  onChange={handleFileChange}
-                  className='file-input file-input-md w-full border border-[#CDC4B9] h-fit flex-1 file-input-neutral'
-                  id='fileInput'
-                  required={!text && genre.length}
-                  name='fileInput'
-                />
-              </div>
-              <p className='mx-3.5 flex items-center h-9'>OR</p>
+            <div className='flex flex-col xl:flex-row items-center xl:items-baseline w-full'>
+              <input
+                type='file'
+                accept='image/*'
+                onChange={handleFileChange}
+                className='file-input file-input-md w-full border border-[#CDC4B9] h-fit flex-1 file-input-neutral'
+                id='fileInput'
+                required={!text && genre.length}
+                name='fileInput'
+              />
+              <p className='mx-3.5 flex items-center h-9 text-sm'>OR</p>
               <div className='flex-1 h-fit w-full'>
                 <label
                   className={`input border w-full h-9 ${imageLoading && "highlight-2nd"}`}
@@ -361,7 +413,6 @@ const CreateBooks = () => {
                     type='url'
                     // required
                     placeholder='https://'
-                    defaultValue='https://'
                     // pattern='^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9\-].*[a-zA-Z0-9])?\.)+[a-zA-Z].*$'
                     title='Must be valid URL'
                     name='imageUrl'
@@ -382,7 +433,7 @@ const CreateBooks = () => {
             Submit
           </button>
           <button className='btn mt-10' type='reset' disabled={imageLoading}>
-            Clear
+            {updating ? "Reset" : "Clear"}
           </button>
         </form>
 
@@ -404,4 +455,4 @@ const CreateBooks = () => {
   );
 };
 
-export default CreateBooks;
+export default CreateAndUpdateBook;

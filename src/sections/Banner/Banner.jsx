@@ -49,7 +49,7 @@ const Banner = () => {
                 All Books
               </button>
               <button className='banner-btn text-lg lg:text-2xl' role='button'>
-                Create Books
+                Create Book
               </button>
             </div>
             <hr className='mt-2 border static lg:hidden' />

@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import { LiquidButton } from "./components/ui/shadcn-io/liquid-button";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 
 const Root = () => {
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location]);
   return (
     <div className='relative'>
       <Navbar />
