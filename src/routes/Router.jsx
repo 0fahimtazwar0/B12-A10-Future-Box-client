@@ -8,6 +8,7 @@ import MyBooks from "../pages/MyBooks";
 import Login from "../pages/Login";
 import Register from "../pages/register";
 import BookDetails from "../pages/BookDetails";
+import PageNotFound from "../components/PageNotFound";
 
 const Router = createBrowserRouter([
   {
@@ -25,11 +26,7 @@ const Router = createBrowserRouter([
       { path: "register", Component: Register },
       {
         path: "*",
-        element: (
-          <p className='h-screen w-full flex justify-center items-center text-6xl'>
-            404
-          </p>
-        ),
+        Component: PageNotFound,
       },
       {
         path: "update-book/:id",

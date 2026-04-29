@@ -5,6 +5,9 @@ import { Slider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { AuthContext } from "../provider/AuthProvider";
 import { useLocation, useParams } from "react-router";
+import SectionTitle from "../components/SectionTitle";
+import DataLoadError from "../components/DataLoadError";
+import Loading from "../components/Loading";
 
 const CreateAndUpdateBook = ({ updating }) => {
   const { id } = useParams();
@@ -31,7 +34,7 @@ const CreateAndUpdateBook = ({ updating }) => {
     if (updating) {
       fetch(`http://localhost:3000/book-details/${id}`)
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch books");
+          if (!res.ok) throw new Error("Couldn't fetch book");
           return res.json();
         })
         .then((data) => {
@@ -91,10 +94,9 @@ const CreateAndUpdateBook = ({ updating }) => {
     };
   }, [text]);
 
-  if (updating && loading)
-    return <p className='text-center mt-16'>Loading...</p>;
+  if (updating && loading) return <Loading />;
   if (updating && error)
-    return <p className='text-center mt-16 text-red-500'>{error}</p>;
+    return <DataLoadError emoji='🫤'>{error}</DataLoadError>;
   if (updating) {
     console.log("updating");
     console.log(data);
@@ -254,204 +256,191 @@ const CreateAndUpdateBook = ({ updating }) => {
   };
 
   return (
-    <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding) sm:mt-16'>
-      <div className='relative h-fit overflow-hidden p-3 max-w-6xl mx-auto'>
-        <form
-          className='flex flex-col xl:grid xl:grid-cols-2  gap-x-10 gap-y-2.5'
-          onSubmit={handleCreateBookForm}
-          onReset={handleReset}
-          ref={formRef}
-        >
-          <div className='flex items-center gap-5 '>
-            <label htmlFor='bookName' className='font-semibold  min-w-26'>
-              Book Name:
-            </label>
-            <input
-              id='bookName'
-              type='text'
-              placeholder='e.g.War and Peace'
-              className='input border w-full'
-              name='bookName'
-              required
-              defaultValue={updating && data.title}
-            />
+    // <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding)'>
+    <div className='relative h-fit overflow-hidden p-3 max-w-6xl mx-auto'>
+      <SectionTitle>{updating ? "Update Book" : "Create Book"}</SectionTitle>
+      <form
+        className='flex flex-col xl:grid xl:grid-cols-2  gap-x-10 gap-y-2.5 mt-5'
+        onSubmit={handleCreateBookForm}
+        onReset={handleReset}
+        ref={formRef}
+      >
+        <div className='flex items-center gap-5 '>
+          <label htmlFor='bookName' className='font-semibold  min-w-26'>
+            Book Name:
+          </label>
+          <input
+            id='bookName'
+            type='text'
+            placeholder='e.g.War and Peace'
+            className='input border w-full'
+            name='bookName'
+            required
+            defaultValue={updating && data.title}
+          />
+        </div>
+        <div className='flex items-center gap-7'>
+          <label htmlFor='rating' className='font-semibold min-w-26'>
+            Rating:
+          </label>
+          <div className='flex flex-1 gap-2.5'>
+            <Slider
+              value={[rating]}
+              max={5}
+              step={0.1}
+              className='mx-auto w-full flex-1'
+              name='rating'
+              onValueChange={(val) => setRating(val[0])}
+            />{" "}
+            <p className='flex bg-neutral text-white font-medium px-1 rounded-sm text-sm justify-center items-center w-8'>
+              {rating}
+            </p>
           </div>
-          <div className='flex items-center gap-7'>
-            <label htmlFor='rating' className='font-semibold min-w-26'>
-              Rating:
-            </label>
-            <div className='flex flex-1 gap-2.5'>
-              <Slider
-                value={[rating]}
-                max={5}
-                step={0.1}
-                className='mx-auto w-full flex-1'
-                name='rating'
-                onValueChange={(val) => setRating(val[0])}
-              />{" "}
-              <p className='flex bg-neutral text-white font-medium px-1 rounded-sm text-sm justify-center items-center w-8'>
-                {rating}
-              </p>
-            </div>
-          </div>
-          <div className='flex items-center gap-5'>
-            <label htmlFor='authorName' className='min-w-26 font-semibold'>
-              Author:
-            </label>
-            <input
-              id='authorName'
-              name='authorName'
-              type='text'
-              placeholder='e.g.Leo Tolstoy'
-              className='input border w-full'
-              required
-              defaultValue={updating && data.author}
-            />
-          </div>
-          <div className='flex items-center gap-5'>
-            <label htmlFor='creatorName' className='min-w-26 font-semibold'>
-              Creator:
-            </label>
-            <input
-              id='creatorName'
-              type='text'
-              value={user?.email}
-              className='input border w-full'
-              readOnly
-            />
-          </div>
-          <div className='flex flex-col gap-2.5 mt-6 col-span-2'>
-            <label htmlFor='genre' className='font-semibold'>
-              Genres:
-            </label>
-            <div className='flex flex-wrap items-center gap-2 relative'>
-              <div
-                className={` border-black border-2 w-[101%] h-[105%] xl:h-[120%] absolute right-[-0.5%] rounded-md tooltip tooltip-bottom tooltip-open pointer-events-none ${genreWarning || "hidden"}`}
-              >
-                <div className='tooltip-content bg-white border border-black shadow-[0_2px_4px_rgba(0,0,0,0.08),0_8px_16px_rgba(0,0,0,0.12)]'>
-                  <div className='text-[13px] text-black open-sans h-8 flex justify-center items-center'>
-                    <img
-                      src='https://caneat.jp/assets/warning_icon-78f1c5d966737518b5db55dff791aa64c4d256aeffb0b708a626d582b4edadb2.png'
-                      alt=''
-                      className='w-7 mr-2'
-                    />
-                    Please choose one of the options.
-                  </div>
+        </div>
+        <div className='flex items-center gap-5'>
+          <label htmlFor='authorName' className='min-w-26 font-semibold'>
+            Author:
+          </label>
+          <input
+            id='authorName'
+            name='authorName'
+            type='text'
+            placeholder='e.g.Leo Tolstoy'
+            className='input border w-full'
+            required
+            defaultValue={updating && data.author}
+          />
+        </div>
+        <div className='flex items-center gap-5'>
+          <label htmlFor='creatorName' className='min-w-26 font-semibold'>
+            Creator:
+          </label>
+          <input
+            id='creatorName'
+            type='text'
+            value={user?.email}
+            className='input border w-full'
+            readOnly
+          />
+        </div>
+        <div className='flex flex-col gap-2.5 mt-6 col-span-2'>
+          <label htmlFor='genre' className='font-semibold'>
+            Genres:
+          </label>
+          <div className='flex flex-wrap items-center gap-2 relative'>
+            <div
+              className={` border-black border-2 w-[101%] h-[105%] xl:h-[120%] absolute right-[-0.5%] rounded-md tooltip tooltip-bottom tooltip-open pointer-events-none ${genreWarning || "hidden"}`}
+            >
+              <div className='tooltip-content bg-white border border-black shadow-[0_2px_4px_rgba(0,0,0,0.08),0_8px_16px_rgba(0,0,0,0.12)]'>
+                <div className='text-[13px] text-black open-sans h-8 flex justify-center items-center'>
+                  <img
+                    src='https://caneat.jp/assets/warning_icon-78f1c5d966737518b5db55dff791aa64c4d256aeffb0b708a626d582b4edadb2.png'
+                    alt=''
+                    className='w-7 mr-2'
+                  />
+                  Please choose one of the options.
                 </div>
               </div>
-              <ToggleGroup
-                type='multiple'
-                value={genre}
-                onValueChange={setGenre}
-                spacing={2}
-                className='flex flex-wrap'
-                variant='outline'
-                size='default'
-              >
-                {genreList.map((name, key) => {
-                  return (
-                    <ToggleGroupItem value={name} key={key}>
-                      {name}
-                    </ToggleGroupItem>
-                  );
-                })}
-              </ToggleGroup>
-            </div>{" "}
-          </div>
-          <div className='flex flex-col gap-2.5 mt-6 col-span-2'>
-            <label htmlFor='summary' className='font-semibold'>
-              Summary:
-            </label>
-            <textarea
-              id='summary'
-              name='summary'
-              type='textarea'
-              placeholder='Summary and Additional information about the book'
-              className='input border w-full h-full min-h-52 whitespace-pre-wrap'
-              required
-              defaultValue={updating && data.summary}
+            </div>
+            <ToggleGroup
+              type='multiple'
+              value={genre}
+              onValueChange={setGenre}
+              spacing={2}
+              className='flex flex-wrap'
+              variant='outline'
+              size='default'
+            >
+              {genreList.map((name, key) => {
+                return (
+                  <ToggleGroupItem value={name} key={key}>
+                    {name}
+                  </ToggleGroupItem>
+                );
+              })}
+            </ToggleGroup>
+          </div>{" "}
+        </div>
+        <div className='flex flex-col gap-2.5 mt-6 col-span-2'>
+          <label htmlFor='summary' className='font-semibold'>
+            Summary:
+          </label>
+          <textarea
+            id='summary'
+            name='summary'
+            type='textarea'
+            placeholder='Summary and Additional information about the book'
+            className='input border w-full h-full min-h-52 whitespace-pre-wrap'
+            required
+            defaultValue={updating && data.summary}
+          />
+        </div>
+        <div className='flex flex-col gap-2.5 mt-10 col-span-2 justify-center'>
+          <label className='font-semibold'>Book Image:</label>
+          <div className='flex flex-col xl:flex-row items-center xl:items-baseline w-full'>
+            <input
+              type='file'
+              accept='image/*'
+              onChange={handleFileChange}
+              className='file-input file-input-md w-full border border-[#CDC4B9] h-fit flex-1 file-input-neutral'
+              id='fileInput'
+              required={!text && genre.length}
+              name='fileInput'
             />
-          </div>
-          <div className='flex flex-col gap-2.5 mt-10 col-span-2 justify-center'>
-            <label className='font-semibold'>Book Image:</label>
-            <div className='flex flex-col xl:flex-row items-center xl:items-baseline w-full'>
-              <input
-                type='file'
-                accept='image/*'
-                onChange={handleFileChange}
-                className='file-input file-input-md w-full border border-[#CDC4B9] h-fit flex-1 file-input-neutral'
-                id='fileInput'
-                required={!text && genre.length}
-                name='fileInput'
-              />
-              <p className='mx-3.5 flex items-center h-9 text-sm'>OR</p>
-              <div className='flex-1 h-fit w-full'>
-                <label
-                  className={`input border w-full h-9 ${imageLoading && "highlight-2nd"}`}
-                >
-                  {imageLoading ? (
-                    <span className='loading loading-spinner loading-xs'></span>
-                  ) : (
-                    <svg
-                      className='h-[1em] opacity-50'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 24 24'
+            <p className='mx-3.5 flex items-center h-9 text-sm'>OR</p>
+            <div className='flex-1 h-fit w-full'>
+              <label
+                className={`input border w-full h-9 ${imageLoading && "highlight-2nd"}`}
+              >
+                {imageLoading ? (
+                  <span className='loading loading-spinner loading-xs'></span>
+                ) : (
+                  <svg
+                    className='h-[1em] opacity-50'
+                    xmlns='http://www.w3.org/2000/svg'
+                    viewBox='0 0 24 24'
+                  >
+                    <g
+                      strokeLinejoin='round'
+                      strokeLinecap='round'
+                      strokeWidth='2.5'
+                      fill='none'
+                      stroke='currentColor'
                     >
-                      <g
-                        strokeLinejoin='round'
-                        strokeLinecap='round'
-                        strokeWidth='2.5'
-                        fill='none'
-                        stroke='currentColor'
-                      >
-                        <path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'></path>
-                        <path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'></path>
-                      </g>
-                    </svg>
-                  )}
-                  <input
-                    type='url'
-                    // required
-                    placeholder='https://'
-                    // pattern='^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9\-].*[a-zA-Z0-9])?\.)+[a-zA-Z].*$'
-                    title='Must be valid URL'
-                    name='imageUrl'
-                    value={text}
-                    onChange={handleTextChange}
-                    disabled={imageLoading}
-                    required={!file && genre.length}
-                  />
-                </label>
-              </div>
+                      <path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'></path>
+                      <path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'></path>
+                    </g>
+                  </svg>
+                )}
+                <input
+                  type='url'
+                  // required
+                  placeholder='https://'
+                  // pattern='^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9\-].*[a-zA-Z0-9])?\.)+[a-zA-Z].*$'
+                  title='Must be valid URL'
+                  name='imageUrl'
+                  value={text}
+                  onChange={handleTextChange}
+                  disabled={imageLoading}
+                  required={!file && genre.length}
+                />
+              </label>
             </div>
           </div>
-          <button
-            className='btn btn-neutral mt-10'
-            type='submit'
-            disabled={imageLoading}
-          >
-            Submit
-          </button>
-          <button className='btn mt-10' type='reset' disabled={imageLoading}>
-            {updating ? "Reset" : "Clear"}
-          </button>
-        </form>
-
-        {/* <BorderBeam
-          duration={12}
-          size={200}
-          borderWidth={3}
-          className='from-base-100 via-neutral to-base-100'
-        />
-        <BorderBeam
-          duration={12}
-          size={200}
-          borderWidth={3}
-          delay={6}
-          className='from-base-100 via-neutral to-base-100'
-        /> */}
-      </div>
+        </div>
+        <button
+          className='btn btn-neutral mt-10'
+          type='submit'
+          disabled={imageLoading}
+        >
+          Submit
+        </button>
+        <button className='btn mt-10' type='reset' disabled={imageLoading}>
+          {updating ? "Reset" : "Clear"}
+        </button>
+      </form>
     </div>
+    // </div>
   );
 };
 

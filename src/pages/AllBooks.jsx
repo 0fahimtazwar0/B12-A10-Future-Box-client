@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Card from "../components/Card/Card";
 import SectionTitle from "../components/SectionTitle";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import DataLoadError from "../components/DataLoadError";
+import Loading from "../components/Loading";
 
 const AllBooks = () => {
   const [data, setData] = useState([]);
@@ -29,13 +31,13 @@ const AllBooks = () => {
     if (sort === "name") result = a.title.localeCompare(b.title);
     return sortDir === "asc" ? result : -result;
   });
-  if (loading) return <p className='text-center mt-16'>Loading...</p>;
-  if (error) return <p className='text-center mt-16 text-red-500'>{error}</p>;
+  if (loading) return <Loading></Loading>;
+  if (error) return <DataLoadError>{error}</DataLoadError>;
   return (
-    <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding) mt-16'>
+    <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding)'>
       <div className='relative flex flex-col gap-8'>
         <SectionTitle>All Books</SectionTitle>
-        <div className='bg-base-200 p-2 pr-3 md:absolute w-full md:w-fit  top-1/2 -translate-y-1/2 right-0 rounded-full flex gap-3 h-fit'>
+        <div className='bg-base-200 p-2 pr-3 md:absolute w-full md:w-fit  top-1/2 -translate-y-1/2 right-0 rounded-full flex gap-3 h-fit justify-between'>
           <select
             defaultValue='date'
             className='select rounded-full'

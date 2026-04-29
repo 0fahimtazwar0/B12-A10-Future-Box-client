@@ -11,6 +11,8 @@ import podiumImg from "/src/assets/podium.png";
 import { useParams } from "react-router";
 import { IoSend } from "react-icons/io5";
 import { AuthContext } from "../provider/AuthProvider";
+import Loading from "../components/Loading";
+import DataLoadError from "../components/DataLoadError";
 
 const BookDetails = () => {
   const { user } = use(AuthContext);
@@ -23,7 +25,7 @@ const BookDetails = () => {
   useEffect(() => {
     fetch(`http://localhost:3000/book-details/${id}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch books");
+        if (!res.ok) throw new Error("Couldn't fetch book");
         return res.json();
       })
       .then((data) => {
@@ -34,13 +36,15 @@ const BookDetails = () => {
           ),
         );
       })
-      .catch((err) => setError(err.message))
+      .catch((err) => {
+        setError(err.message);
+        console.log(err);
+      })
       .finally(() => setLoading(false));
   }, []); // ← empty array ensures this runs only once on mount
 
-  if (loading) return <p className='text-center mt-16'>Loading...</p>;
-  if (error) return <p className='text-center mt-16 text-red-500'>{error}</p>;
-
+  if (loading) return <Loading></Loading>;
+  if (error) return <DataLoadError emoji='🫤'>{error}</DataLoadError>;
   const handleComment = (e) => {
     e.preventDefault();
     console.log(e.target.comment.value);
@@ -68,7 +72,7 @@ const BookDetails = () => {
       });
   };
   return (
-    <div className='w-fit max-w-[1440px] mt-24 mx-auto'>
+    <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding)'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-10 w-fit mx-auto'>
         <button className='btn btn-neutral btn-ghost rounded-full justify-start  md:hidden'>
           <IoMdArrowRoundBack className='text-xl' />

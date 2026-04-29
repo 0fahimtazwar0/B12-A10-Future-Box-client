@@ -1,6 +1,6 @@
 import React, { use } from "react";
 import { LiquidButton } from "./ui/shadcn-io/liquid-button";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
 import { ShimmerButton } from "/src/components/ui/shimmer-button";
 import { TbUserPlus } from "react-icons/tb";
@@ -8,6 +8,8 @@ import { LuLogIn, LuLogOut } from "react-icons/lu";
 
 const Navbar = () => {
   let navigate = useNavigate();
+  const location = useLocation();
+  console.log(location.pathname);
 
   const { user, logout } = use(AuthContext);
   const list = (
@@ -33,7 +35,9 @@ const Navbar = () => {
 
   return (
     <>
-      <div className='bg-base-100/30 shadow-sm backdrop-blur-2xl sticky sm:fixed z-50 top-0 w-full box-border h-16'>
+      <div
+        className={`bg-base-100/30 shadow-sm backdrop-blur-2xl ${location.pathname == "/" && "sm:fixed"} sticky z-50 top-0 w-full box-border h-16`}
+      >
         <div className='navbar max-w-(--max-width) mx-auto h-16'>
           <div className='navbar-start'>
             <div className='dropdown'>

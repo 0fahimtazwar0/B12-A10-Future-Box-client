@@ -19,8 +19,18 @@ const LatestBooks = () => {
       .finally(() => setLoading(false));
   }, []); // ← empty array ensures this runs only once on mount
 
-  if (loading) return <p className='text-center mt-16'>Loading...</p>;
-  if (error) return <p className='text-center mt-16 text-red-500'>{error}</p>;
+  if (loading)
+    return (
+      <div className='flex justify-center items-center mt-16'>
+        <span className='loading loading-ring size-20'></span>
+      </div>
+    );
+  if (error)
+    return (
+      <div className='text-4xl flex justify-center items-center font-bold text-neutral font-heading mt-16'>
+        {error} 😞
+      </div>
+    );
   return (
     <div>
       <SectionTitle>Latest Books</SectionTitle>

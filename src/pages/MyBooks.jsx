@@ -1,9 +1,11 @@
 import React, { use, useEffect, useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { MagicCard } from "/src/components/ui/magic-card";
-import { Backlight } from "/src/components/ui/backlight";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
+import SectionTitle from "../components/SectionTitle";
+import Loading from "../components/Loading";
+import DataLoadError from "../components/DataLoadError";
 
 const MyBooks = () => {
   let navigate = useNavigate();
@@ -30,8 +32,8 @@ const MyBooks = () => {
       .finally(() => setLoading(false));
   }, [user]); // ← empty array ensures this runs only once on mount
 
-  if (loading) return <p className='text-center mt-16'>Loading...</p>;
-  if (error) return <p className='text-center mt-16 text-red-500'>{error}</p>;
+  if (loading) return <Loading />;
+  if (error) return <DataLoadError>{error}</DataLoadError>;
 
   const handleDelete = (id) => {
     console.log("delete id", id);
@@ -48,15 +50,14 @@ const MyBooks = () => {
     navigate(`/update-book/${id}`);
   };
   return (
-    <>
+    <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding)'>
+      <SectionTitle>My Books</SectionTitle>
+
       <MagicCard
         gradientColor='var(--color-purple-300)'
-        className='rounded-box mt-20 w-full max-w-[1440px] mx-auto bg-[#fff8eb] shadow-[15px_15px_30px_#d7cdbd,-15px_-15px_30px_rgb(255,255,255,0.5)]'
+        className='rounded-box mt-5 w-full max-w-[1440px] mx-auto bg-[#fff8eb] shadow-[15px_15px_30px_#d7cdbd,-15px_-15px_30px_rgb(255,255,255,0.5)]'
       >
         <ul className='list w-full'>
-          {/* <li className='p-4 pb-2 text-xs opacity-60 tracking-wide'>
-        Most played songs this week
-      </li> */}
           {data?.map((single) => {
             return (
               <li className='list-row' key={single._id}>
@@ -104,7 +105,7 @@ const MyBooks = () => {
           })}
         </ul>
       </MagicCard>
-    </>
+    </div>
   );
 };
 
