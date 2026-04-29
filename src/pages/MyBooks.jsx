@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { MagicCard } from "/src/components/ui/magic-card";
 import { Backlight } from "/src/components/ui/backlight";
 import { useNavigate } from "react-router";
+import { AuthContext } from "../provider/AuthProvider";
 
 const MyBooks = () => {
   let navigate = useNavigate();
@@ -10,8 +11,16 @@ const MyBooks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { user } = use(AuthContext);
   useEffect(() => {
-    fetch("http://localhost:3000/all-books")
+    if (!user) return;
+
+    fetch("http://localhost:3000/my-books", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${user.accessToken}`,
+      },
+    })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch books");
         return res.json();
@@ -19,7 +28,7 @@ const MyBooks = () => {
       .then((data) => setData(data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, []); // ← empty array ensures this runs only once on mount
+  }, [user]); // ← empty array ensures this runs only once on mount
 
   if (loading) return <p className='text-center mt-16'>Loading...</p>;
   if (error) return <p className='text-center mt-16 text-red-500'>{error}</p>;

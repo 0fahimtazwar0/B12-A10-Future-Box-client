@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { AnimatedGradientText } from "/src/components/ui/animated-gradient-text";
 import { ShineBorder } from "/src/components/ui/shine-border";
@@ -9,12 +9,16 @@ import Stars from "../components/Stars";
 import SectionTitle from "../components/SectionTitle";
 import podiumImg from "/src/assets/podium.png";
 import { useParams } from "react-router";
+import { IoSend } from "react-icons/io5";
+import { AuthContext } from "../provider/AuthProvider";
 
 const BookDetails = () => {
+  const { user } = use(AuthContext);
   const { id } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetch(`http://localhost:3000/book-details/${id}`)
@@ -22,15 +26,49 @@ const BookDetails = () => {
         if (!res.ok) throw new Error("Failed to fetch books");
         return res.json();
       })
-      .then((data) => setData(data))
+      .then((data) => {
+        setData(data);
+        setComments(
+          data.comments?.sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at),
+          ),
+        );
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []); // ← empty array ensures this runs only once on mount
 
   if (loading) return <p className='text-center mt-16'>Loading...</p>;
   if (error) return <p className='text-center mt-16 text-red-500'>{error}</p>;
+
+  const handleComment = (e) => {
+    e.preventDefault();
+    console.log(e.target.comment.value);
+    const commentContent = e.target.comment.value;
+    const userEmail = user?.email;
+    const newComment = {
+      email: userEmail,
+      comment: commentContent,
+      created_at: new Date().toISOString(),
+    };
+
+    console.log(comments);
+    fetch(`http://localhost:3000/add-comment/${id}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(newComment),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("after saving comment", data);
+        e.target.reset();
+        setComments((prev) => [newComment, ...(prev || [])]);
+      });
+  };
   return (
-    <div className='flex flex-col gap-10 w-fit max-w-[1440px] mt-24 mx-auto'>
+    <div className='w-fit max-w-[1440px] mt-24 mx-auto'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-10 w-fit mx-auto'>
         <button className='btn btn-neutral btn-ghost rounded-full justify-start  md:hidden'>
           <IoMdArrowRoundBack className='text-xl' />
@@ -73,7 +111,7 @@ const BookDetails = () => {
                 >
                   <span
                     className={cn(
-                      "animate-gradient absolute inset-0 block h-full w-full rounded-[inherit] bg-linear-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-size-[300%_100%] p-[2px]",
+                      "animate-gradient absolute inset-0 block h-full w-full rounded-[inherit] bg-linear-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-size-[300%_100%] p-0.5",
                     )}
                     style={{
                       WebkitMask:
@@ -92,37 +130,59 @@ const BookDetails = () => {
             </div>
             <div className='flex-1 min-h-6'></div>
             <div className='flex flex-col border p-3.5 rounded-sm font-medium mt-10 md:mt-0 col-span-1'>
-              <p>
+              <div>
                 Added By{" "}
                 <p className='font-semibold truncate'>{data.userEmail}</p>
-              </p>
+              </div>
             </div>
           </div>
         </div>
-        <div className='col-span-1 md:col-span-2 mt-14 md:mt-0'>
-          <AuroraText className='font-heading text-5xl'>Summary</AuroraText>
-          <div className='relative w-full'>
-            <hr className='mt-2 border' />
-            <ShineBorder
-              shineColor={["#7928CA", "#daaa63", "#e29a3f", "#FE8BBB"]}
-            />
+        <div className='md:col-span-2 flex flex-col-reverse md:flex-row gap-10'>
+          <div className='flex-1 mt-14 md:mt-0'>
+            <AuroraText className='font-heading text-5xl'>Comments</AuroraText>
+            <div className='relative w-full mt-2 '>
+              <hr className='border' />
+              <ShineBorder
+                shineColor={["#7928CA", "#daaa63", "#e29a3f", "#FE8BBB"]}
+              />
+            </div>
+            <form className='mt-5 flex' onSubmit={handleComment}>
+              <textarea
+                rows={1}
+                onInput={(e) => {
+                  e.target.style.height = "auto";
+                  e.target.style.height = e.target.scrollHeight + "px";
+                }}
+                className='resize-none overflow-hidden w-full p-2 border-2 border-primary rounded-sm min-h-11 bg-[#fff8eb]'
+                placeholder='Type a comment...'
+                name='comment'
+              />
+              <button type='submit' className='btn btn-accent btn-square ml-2'>
+                <IoSend />
+              </button>
+            </form>
+            {comments?.map((single, index) => (
+              <div
+                key={index}
+                className='mt-3.5 bg-[#fff8eb] border-2 rounded-box border-primary p-2'
+              >
+                <h5 className='font-bold text-accent'>{single.email}</h5>
+                <p className='text-justify wrap-normal text-sm'>
+                  {single.comment}
+                </p>
+              </div>
+            ))}
           </div>
-          <p className='text-justify wrap-normal mt-3.5'>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias
-            ipsa iusto nisi veniam saepe tempore inventore eum, tenetur eaque
-            dicta dignissimos explicabo vero dolore voluptatibus, dolorum culpa
-            est neque natus itaque quo? Vel molestiae ea exercitationem nostrum
-            ad, saepe beatae tempora id. Quas, facere deserunt quis est rerum
-            nesciunt incidunt sunt molestias reprehenderit, debitis et labore
-            illum neque maxime eaque amet architecto nostrum aperiam quidem
-            voluptates, nulla dolorum vitae ex. Velit alias dolore dolores
-            aspernatur aliquid quasi, veritatis culpa! Ullam maxime quisquam
-            odit a magni eos accusantium corrupti vitae dolor blanditiis?
-            Dolorum quia modi libero repudiandae adipisci fuga, amet eum
-            eligendi, et eos culpa a hic. Deserunt, reprehenderit incidunt
-            alias, soluta ratione perspiciatis fuga voluptatibus suscipit animi
-            debitis sed maxime.
-          </p>
+          <div className='flex-1 mt-14 md:mt-0'>
+            <AuroraText className='font-heading text-5xl'>Summary</AuroraText>
+            <div className='relative w-full mt-2'>
+              <hr className='border' />
+              <ShineBorder
+                shineColor={["#7928CA", "#daaa63", "#e29a3f", "#FE8BBB"]}
+              />
+            </div>
+            <p className='text-justify wrap-normal mt-3.5'>{data.summary}</p>
+          </div>
         </div>
       </div>
     </div>
