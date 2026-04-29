@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { AnimatedGradientText } from "/src/components/ui/animated-gradient-text";
 import { ShineBorder } from "/src/components/ui/shine-border";
@@ -10,29 +10,29 @@ import SectionTitle from "../components/SectionTitle";
 import podiumImg from "/src/assets/podium.png";
 import { Link, useParams } from "react-router";
 import { IoSend } from "react-icons/io5";
-import { AuthContext } from "../provider/AuthProvider";
 import Loading from "../components/Loading";
 import DataLoadError from "../components/DataLoadError";
 import toast from "react-hot-toast";
+import { format } from "date-fns";
+import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const BookDetails = () => {
-  const { user } = use(AuthContext);
+  const { user } = useAuth();
   const { id } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/book-details/${id}`)
+    axiosSecure
+      .get(`/book-details/${id}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Couldn't fetch book");
-        return res.json();
-      })
-      .then((data) => {
-        setData(data);
+        setData(res.data);
         setComments(
-          data.comments?.sort(
+          res.data.comments?.sort(
             (a, b) => new Date(b.created_at) - new Date(a.created_at),
           ),
         );
@@ -61,20 +61,12 @@ const BookDetails = () => {
     };
 
     // console.log(comments);
-    fetch(`http://localhost:3000/add-comment/${id}`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(newComment),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        // console.log("after saving comment", data);
-        toast.success("Comment added!");
-        e.target.reset();
-        setComments((prev) => [newComment, ...(prev || [])]);
-      });
+    axiosSecure.post(`/add-comment/${id}`, newComment).then(() => {
+      // console.log("after saving comment", data);
+      toast.success("Comment added!");
+      e.target.reset();
+      setComments((prev) => [newComment, ...(prev || [])]);
+    });
   };
   return (
     <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding)'>
@@ -144,10 +136,19 @@ const BookDetails = () => {
               ))}
             </div>
             <div className='flex-1 min-h-6'></div>
-            <div className='flex flex-col border p-3.5 rounded-sm font-medium mt-10 md:mt-0 col-span-1'>
+            <div className='flex p-3.5 rounded-sm font-medium mt-10 md:mt-0 col-span-1 gap-10'>
               <div>
-                Added By{" "}
-                <p className='font-semibold truncate'>{data.userEmail}</p>
+                <p className='text-sm'>Added By </p>
+                <p className='font-semibold truncate text-accent'>
+                  {data.userEmail}
+                </p>
+              </div>
+              <div>
+                <p className='text-sm'>Modified At</p>
+                <p className='font-semibold truncate text-accent'>
+                  {/* {data.created_at} */}
+                  {format(data.created_at, "dd/MM/yyyy")}
+                </p>
               </div>
             </div>
           </div>

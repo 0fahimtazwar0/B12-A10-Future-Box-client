@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import SectionTitle from "../components/SectionTitle";
 import flyingBook from "/src/assets/flying-book.png";
 import { AuroraText } from "/src/components/ui/aurora-text";
@@ -6,9 +6,10 @@ import { SparklesText } from "/src/components/ui/sparkles-text";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
 import toast from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
-  const { user, login, googleLogin } = use(AuthContext);
+  const { user, login, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 

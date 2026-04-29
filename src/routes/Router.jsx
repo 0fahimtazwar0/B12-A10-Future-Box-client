@@ -10,6 +10,7 @@ import Register from "../pages/register";
 import BookDetails from "../pages/BookDetails";
 import PageNotFound from "../components/PageNotFound";
 import PrivateRoute from "../components/PrivateRoute";
+import DataLoadError from "../components/DataLoadError";
 
 const Router = createBrowserRouter([
   {
@@ -46,6 +47,7 @@ const Router = createBrowserRouter([
       {
         path: "update-book/:id",
         element: <CreateAndUpdateBook updating={true}></CreateAndUpdateBook>,
+        errorElement: <DataLoadError emoji='🫤'>Couldn't find</DataLoadError>,
       },
 
       {
@@ -55,6 +57,7 @@ const Router = createBrowserRouter([
             <BookDetails />
           </PrivateRoute>
         ),
+        errorElement: <DataLoadError emoji='🫤'>Couldn't find</DataLoadError>,
       },
     ],
   },

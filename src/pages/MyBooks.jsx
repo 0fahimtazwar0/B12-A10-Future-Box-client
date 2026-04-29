@@ -1,12 +1,13 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { MagicCard } from "/src/components/ui/magic-card";
 import { useNavigate } from "react-router";
-import { AuthContext } from "../provider/AuthProvider";
 import SectionTitle from "../components/SectionTitle";
 import Loading from "../components/Loading";
 import DataLoadError from "../components/DataLoadError";
 import toast from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const MyBooks = () => {
   let navigate = useNavigate();
@@ -15,36 +16,26 @@ const MyBooks = () => {
   const [error, setError] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
 
-  const { user } = use(AuthContext);
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
   useEffect(() => {
     if (!user) return;
 
-    fetch("http://localhost:3000/my-books", {
-      method: "GET",
-      headers: {
-        authorization: `Bearer ${user.accessToken}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch books");
-        return res.json();
-      })
-      .then((data) => setData(data))
+    axiosSecure
+      .get("my-books")
+      .then((res) => setData(res.data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [user]); // ← empty array ensures this runs only once on mount
 
   const handleDelete = (id) => {
     // console.log("delete id", id);
-    fetch(`http://localhost:3000/delete-book/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then(() => {
-        // console.log("after delete", data);
-        setData((prev) => prev.filter((single) => single._id !== id));
-        toast.success("Successfully deleted book.");
-      });
+    axiosSecure.delete(`/delete-book/${id}`).then(() => {
+      // console.log("after delete", data);
+      setData((prev) => prev.filter((single) => single._id !== id));
+      toast.success("Successfully deleted book.");
+    });
   };
 
   const handleEdit = (id) => {

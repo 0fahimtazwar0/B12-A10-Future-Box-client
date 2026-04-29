@@ -1,18 +1,21 @@
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BorderBeam } from "/src/components/ui/border-beam";
 import { Toggle } from "@/components/ui/toggle";
 import { Slider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { AuthContext } from "../provider/AuthProvider";
 import { useLocation, useNavigate, useParams } from "react-router";
 import SectionTitle from "../components/SectionTitle";
 import DataLoadError from "../components/DataLoadError";
 import Loading from "../components/Loading";
 import toast from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import axios from "axios";
 
 const CreateAndUpdateBook = ({ updating }) => {
   const { id } = useParams();
-  const { user } = use(AuthContext);
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +27,7 @@ const CreateAndUpdateBook = ({ updating }) => {
   const [imageLoading, setImageLoading] = useState(false);
   const [urlValid, setUrlValid] = useState(null);
   const [rating, setRating] = useState(0);
+  const [freeze, setFreeze] = useState(false);
 
   const formRef = useRef(null);
   const location = useLocation();
@@ -33,13 +37,11 @@ const CreateAndUpdateBook = ({ updating }) => {
   }, [location]);
 
   useEffect(() => {
-    if (updating) {
-      fetch(`http://localhost:3000/book-details/${id}`)
+    if (updating && user) {
+      axiosSecure
+        .get(`book-details/${id}`)
         .then((res) => {
-          if (!res.ok) throw new Error("Couldn't fetch book");
-          return res.json();
-        })
-        .then((data) => {
+          const data = res.data;
           setData(data);
           setText(data.coverImage);
           setGenre(data.genre);
@@ -48,7 +50,7 @@ const CreateAndUpdateBook = ({ updating }) => {
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
     }
-  }, []);
+  }, [user]);
 
   // image link loading
 
@@ -147,7 +149,6 @@ const CreateAndUpdateBook = ({ updating }) => {
 
   const handleCreateBookForm = async (e) => {
     e.preventDefault();
-
     // e.stopPropagation();
     if (!genre.length) {
       setGenreWarning(true);
@@ -166,6 +167,7 @@ const CreateAndUpdateBook = ({ updating }) => {
         toast.error("image url not found");
         return;
       } else {
+        setFreeze(true);
         const title = e.target.bookName.value;
         const rating = e.target.rating.value;
         const author = e.target.authorName.value;
@@ -183,22 +185,16 @@ const CreateAndUpdateBook = ({ updating }) => {
           created_at: new Date().toISOString(),
         };
 
-        const promise = fetch(
-          `http://localhost:3000/${updating ? `update-book/${id}` : "add-book"}`,
-          {
-            method: `${updating ? "PATCH" : "POST"}`,
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(newBook),
-          },
-        )
-          .then((res) => res.json())
-          .then(() => {
-            // console.log("after saving book", data);
-            e.target.reset();
-            navigate("/all-books");
-          });
+        const promise = updating
+          ? axiosSecure.patch(`/update-book/${id}`, newBook)
+          : axiosSecure.post("/add-book", newBook);
+
+        promise.then(() => {
+          // console.log("after saving book", data);
+          e.target.reset();
+          navigate("/all-books");
+          setFreeze(false);
+        });
         toast.promise(promise, {
           loading: "Loading...",
           success: `${updating ? "Updated" : "Created"} book successfully!`,
@@ -206,6 +202,7 @@ const CreateAndUpdateBook = ({ updating }) => {
         });
       }
     } else {
+      setFreeze(true);
       const title = e.target.bookName.value;
       const rating = e.target.rating.value;
       const author = e.target.authorName.value;
@@ -216,12 +213,9 @@ const CreateAndUpdateBook = ({ updating }) => {
       const imgbbAPI = "4f580ae20bff203b1a9b2828e548fda5";
       const imgData = new FormData();
       imgData.append("image", file);
-      fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPI}`, {
-        method: "POST",
-        body: imgData,
-      })
-        .then((res) => res.json())
-        .then((data) => {
+      axios
+        .post(`https://api.imgbb.com/1/upload?key=${imgbbAPI}`, imgData)
+        .then((res) => {
           // console.log(data);
           const newBook = {
             title,
@@ -229,26 +223,22 @@ const CreateAndUpdateBook = ({ updating }) => {
             genre,
             rating,
             summary,
-            coverImage: data.data.url,
+            coverImage: res.data.data.url,
             userEmail: user?.email,
             created_at: new Date().toISOString(),
           };
-          const promise = fetch(
-            `http://localhost:3000/${updating ? `update-book/${id}` : "add-book"}`,
-            {
-              method: `${updating ? "PATCH" : "POST"}`,
-              headers: {
-                "content-type": "application/json",
-              },
-              body: JSON.stringify(newBook),
-            },
-          )
-            .then((res) => res.json())
-            .then(() => {
-              // console.log("after saving book", data);
-              e.target.reset();
-              navigate("/all-books");
-            });
+
+          const promise = updating
+            ? axiosSecure.patch(`/update-book/${id}`, newBook)
+            : axiosSecure.post("/add-book", newBook);
+
+          promise.then(() => {
+            // console.log("after saving book", data);
+            e.target.reset();
+            navigate("/all-books");
+            setFreeze(false);
+          });
+
           toast.promise(promise, {
             loading: "Loading...",
             success: `${updating ? "Updated" : "Created"} book successfully!`,
@@ -439,11 +429,15 @@ const CreateAndUpdateBook = ({ updating }) => {
         <button
           className='btn btn-neutral mt-10'
           type='submit'
-          disabled={imageLoading}
+          disabled={imageLoading || freeze}
         >
           Submit
         </button>
-        <button className='btn mt-10' type='reset' disabled={imageLoading}>
+        <button
+          className='btn mt-10'
+          type='reset'
+          disabled={imageLoading || freeze}
+        >
           {updating ? "Reset" : "Clear"}
         </button>
       </form>

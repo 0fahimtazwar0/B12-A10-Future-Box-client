@@ -4,6 +4,7 @@ import SectionTitle from "../components/SectionTitle";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 import DataLoadError from "../components/DataLoadError";
 import Loading from "../components/Loading";
+import useAxios from "../hooks/useAxios";
 
 const AllBooks = () => {
   const [data, setData] = useState([]);
@@ -11,17 +12,14 @@ const AllBooks = () => {
   const [error, setError] = useState(null);
   const [sort, setSort] = useState("date");
   const [sortDir, setSortDir] = useState("des");
-
+  const axiosInstance = useAxios();
   useEffect(() => {
-    fetch("http://localhost:3000/all-books")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch books");
-        return res.json();
-      })
-      .then((data) => setData(data))
+    axiosInstance
+      .get("/all-books")
+      .then((res) => setData(res.data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, []); // ← empty array ensures this runs only once on mount
+  }, []);
 
   const sortedData = [...data].sort((a, b) => {
     let result = 0;
