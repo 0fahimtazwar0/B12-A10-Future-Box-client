@@ -1,17 +1,16 @@
-import React, { use } from "react";
+import React from "react";
 import { LiquidButton } from "./ui/shadcn-io/liquid-button";
 import { Link, NavLink, useLocation, useNavigate } from "react-router";
-import { AuthContext } from "../provider/AuthProvider";
 import { ShimmerButton } from "/src/components/ui/shimmer-button";
 import { TbUserPlus } from "react-icons/tb";
 import { LuLogIn, LuLogOut } from "react-icons/lu";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
   let navigate = useNavigate();
   const location = useLocation();
-  console.log(location.pathname);
-
-  const { user, logout } = use(AuthContext);
+  const locationPath = location.pathname;
+  const { user, logout, loading } = useAuth();
   const list = (
     <>
       <li>
@@ -70,14 +69,19 @@ const Navbar = () => {
               </ul>
             </div>
 
-            <LiquidButton className='text-2xl font-heading font-bold'>
+            <LiquidButton
+              className='text-2xl font-heading font-bold'
+              onClick={() => navigate("/")}
+            >
               Book Haven
             </LiquidButton>
           </div>
           <div className='navbar-center hidden lg:flex'>
             <ul className='menu menu-horizontal px-1'>{list}</ul>
           </div>
-          <div className='navbar-end flex justify-end items-center gap-5'>
+          <div
+            className={`navbar-end flex justify-end items-center gap-5 transition-all duration-300 ease-out ${loading ? "opacity-0 blur-sm" : "opacity-100 blur-none"}`}
+          >
             {user ? (
               <>
                 <div
@@ -102,14 +106,18 @@ const Navbar = () => {
               <>
                 <ShimmerButton
                   className='btn px-0 md:px-5 aspect-square md:aspect-auto h-11'
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/login", { state: locationPath })}
                 >
                   <span className='hidden md:block'>Login</span>
                   <LuLogIn className='text-xl block md:hidden' />
                 </ShimmerButton>
                 <ShimmerButton
                   className='btn px-0 md:px-5 aspect-square md:aspect-auto h-11'
-                  onClick={() => navigate("/register")}
+                  onClick={() =>
+                    navigate("/register", {
+                      state: locationPath,
+                    })
+                  }
                 >
                   <span className='hidden md:block'>Register</span>
                   <TbUserPlus className='text-xl block md:hidden' />

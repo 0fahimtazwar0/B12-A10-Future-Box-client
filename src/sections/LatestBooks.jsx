@@ -19,26 +19,28 @@ const LatestBooks = () => {
       .finally(() => setLoading(false));
   }, []); // ← empty array ensures this runs only once on mount
 
-  if (loading)
-    return (
-      <div className='flex justify-center items-center mt-16'>
-        <span className='loading loading-ring size-20'></span>
-      </div>
-    );
-  if (error)
-    return (
-      <div className='text-4xl flex justify-center items-center font-bold text-neutral font-heading mt-16'>
-        {error} 😞
-      </div>
-    );
   return (
     <div>
       <SectionTitle>Latest Books</SectionTitle>
-      <div className='mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
-        {data.map((single, index) => {
-          return <Card single={single} key={index} />;
-        })}
-      </div>
+      {loading ? (
+        <div className='flex justify-center items-center mt-16 min-h-28'>
+          <span className='loading loading-ring size-20'></span>
+        </div>
+      ) : error ? (
+        <div className='text-4xl flex justify-center items-center font-bold text-neutral font-heading mt-16  min-h-28 text-center p-(--padding)'>
+          {error} 😞
+        </div>
+      ) : !data.length ? (
+        <div className='text-4xl flex justify-center items-center font-bold text-neutral font-heading mt-16  min-h-28 text-center p-(--padding)'>
+          No books have been created yet 🫤
+        </div>
+      ) : (
+        <div className='mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
+          {data.map((single, index) => {
+            return <Card single={single} key={index} />;
+          })}
+        </div>
+      )}
     </div>
   );
 };

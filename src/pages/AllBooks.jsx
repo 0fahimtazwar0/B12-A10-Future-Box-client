@@ -31,8 +31,6 @@ const AllBooks = () => {
     if (sort === "name") result = a.title.localeCompare(b.title);
     return sortDir === "asc" ? result : -result;
   });
-  if (loading) return <Loading></Loading>;
-  if (error) return <DataLoadError>{error}</DataLoadError>;
   return (
     <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding)'>
       <div className='relative flex flex-col gap-8'>
@@ -74,11 +72,19 @@ const AllBooks = () => {
           </div>
         </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-5'>
-        {sortedData?.map((single, index) => {
-          return <Card single={single} key={index} />;
-        })}
-      </div>
+      {loading ? (
+        <Loading />
+      ) : error ? (
+        <DataLoadError>{error}</DataLoadError>
+      ) : !data.length ? (
+        <DataLoadError emoji='🫤'>No books have been created yet</DataLoadError>
+      ) : (
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-5'>
+          {sortedData?.map((single, index) => {
+            return <Card single={single} key={index} />;
+          })}
+        </div>
+      )}
     </div>
   );
 };

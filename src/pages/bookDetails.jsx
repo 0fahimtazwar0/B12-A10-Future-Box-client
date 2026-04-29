@@ -8,7 +8,7 @@ import { FaRegStar, FaRegStarHalfStroke, FaStar } from "react-icons/fa6";
 import Stars from "../components/Stars";
 import SectionTitle from "../components/SectionTitle";
 import podiumImg from "/src/assets/podium.png";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { IoSend } from "react-icons/io5";
 import { AuthContext } from "../provider/AuthProvider";
 import Loading from "../components/Loading";
@@ -74,10 +74,13 @@ const BookDetails = () => {
   return (
     <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding)'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-10 w-fit mx-auto'>
-        <button className='btn btn-neutral btn-ghost rounded-full justify-start  md:hidden'>
+        <Link
+          to='/all-books'
+          className='btn btn-neutral btn-ghost rounded-full justify-start  md:hidden'
+        >
           <IoMdArrowRoundBack className='text-xl' />
           Back To All Books
-        </button>
+        </Link>
         <div className='w-fit mt-20 mx-auto flex flex-col items-center justify-center'>
           <div className='book-container float-img'>
             <div className='book'>
@@ -87,10 +90,13 @@ const BookDetails = () => {
           <img src={podiumImg} className='w-md' />
         </div>
         <div className='flex flex-col gap-5'>
-          <button className='btn btn-neutral btn-ghost rounded-full justify-start hidden md:flex'>
+          <Link
+            to='/all-books'
+            className='btn btn-neutral btn-ghost rounded-full justify-start hidden md:flex'
+          >
             <IoMdArrowRoundBack className='text-xl' />
             Back To All Books
-          </button>
+          </Link>
 
           <div className='md:ml-11 flex flex-col h-full'>
             <div>

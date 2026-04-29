@@ -8,6 +8,7 @@ import { TextAnimate } from "/src/components/ui/text-animate";
 import { TextGenerateEffect } from "/src/components/ui/shadcn-io/text-generate-effect/index.jsx";
 import { BlurFade } from "/src/components/ui/blur-fade";
 import BlurText from "/src/components/ui/shadcn-io/blur-text/index.jsx";
+import { Link } from "react-router";
 
 const Banner = () => {
   return (
@@ -45,12 +46,20 @@ const Banner = () => {
           <div>
             <hr className='mt-2 border' />
             <div className='flex justify-center items-center h-full gap-20 mt-2'>
-              <button className='banner-btn text-lg lg:text-2xl' role='button'>
+              <Link
+                to='/all-books'
+                className='banner-btn text-lg lg:text-2xl'
+                role='button'
+              >
                 All Books
-              </button>
-              <button className='banner-btn text-lg lg:text-2xl' role='button'>
+              </Link>
+              <Link
+                to='create-book'
+                className='banner-btn text-lg lg:text-2xl'
+                role='button'
+              >
                 Create Book
-              </button>
+              </Link>
             </div>
             <hr className='mt-2 border static lg:hidden' />
           </div>

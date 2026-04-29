@@ -3,11 +3,14 @@ import SectionTitle from "../components/SectionTitle";
 import flyingBook from "/src/assets/flying-book.png";
 import { AuroraText } from "/src/components/ui/aurora-text";
 import { SparklesText } from "/src/components/ui/sparkles-text";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Login = () => {
   const { user, login, googleLogin } = use(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleLogin = (e) => {
     e.preventDefault();
     console.log(e.target);
@@ -15,11 +18,37 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     console.log(email, password);
-    login(email, password);
+    login(email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        // ...
+        console.log(user);
+        navigate(location.state || "/");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
   const handleGoogleLogin = () => {
-    googleLogin();
+    googleLogin()
+      .then((result) => {
+        // The signed-in user info.
+        const user = result.user;
+        console.log(user);
+        navigate(location.state || "/");
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        console.log(errorCode, errorMessage, email);
+      });
   };
 
   return (
@@ -162,6 +191,7 @@ const Login = () => {
             <Link
               to='/register'
               className='hover:text-accent link link-hover font-semibold'
+              state={location.state}
             >
               Register
             </Link>

@@ -1,13 +1,16 @@
-import React, { use } from "react";
+import React from "react";
 import SectionTitle from "../components/SectionTitle";
 import flyingBook from "/src/assets/flying-book.png";
 import { AuroraText } from "/src/components/ui/aurora-text";
 import { SparklesText } from "/src/components/ui/sparkles-text";
-import { Link } from "react-router";
-import { AuthContext } from "../provider/AuthProvider";
+import { Link, useLocation, useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
 
 const Register = () => {
-  const { user, createUser, googleLogin } = use(AuthContext);
+  const { user, createUser, googleLogin, uploadNameAndPhoto } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleRegister = (e) => {
     e.preventDefault();
     console.log(e.target);
@@ -17,11 +20,46 @@ const Register = () => {
     const photoURL = form.photoURL.value;
     const password = form.password.value;
     // console.log({ name, email, photoURL, password });
-    createUser(email, password, name, photoURL);
+    createUser(email, password)
+      .then(() => {
+        // const user = result.user;
+        // console.log(user);
+        uploadNameAndPhoto(name, photoURL)
+          .then(() => {
+            // console.log("Profile updated!");
+            // // ...
+            // console.log(name, photoURL);
+            navigate(location.state || "/");
+          })
+          .catch((error) => {
+            // An error occurred
+            // ...
+            console.log(error);
+          });
+      })
+      .catch((err) => {
+        const errorCode = err.code;
+        const errorMessage = err.message;
+        alert(errorCode, errorMessage);
+      });
   };
 
   const handleGoogleLogin = () => {
-    googleLogin();
+    googleLogin()
+      .then((result) => {
+        // The signed-in user info.
+        const user = result.user;
+        console.log(user);
+        navigate(location.state || "/");
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        console.log(errorCode, errorMessage, email);
+      });
   };
 
   return (
@@ -235,6 +273,7 @@ const Register = () => {
             <Link
               to='/login'
               className='hover:text-accent link link-hover font-semibold'
+              state={location.state}
             >
               Login
             </Link>

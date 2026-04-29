@@ -19,28 +19,19 @@ const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   console.log(user);
 
   ////creating / registering user
-  const createUser = (email, password, name, photoURL) => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        const user = result.user;
-        // console.log(user);
-        setUser(user);
-        uploadNameAndPhoto(name, photoURL);
-      })
-      .catch((err) => {
-        const errorCode = err.code;
-        const errorMessage = err.message;
-        alert(errorCode, errorMessage);
-      });
+  const createUser = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
   };
 
   //// load previously saved user
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (savedUser) => {
       setUser(savedUser);
+      setLoading(false);
     });
     return () => {
       unsubscribe();
@@ -60,62 +51,20 @@ const AuthProvider = ({ children }) => {
 
   ////login
   const login = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // ...
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   //// upload name and photo
   const uploadNameAndPhoto = (name, photoURL) => {
-    updateProfile(auth.currentUser, {
+    return updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photoURL,
-    })
-      .then(() => {
-        console.log("Profile updated!");
-        // ...
-        console.log(name, photoURL);
-      })
-      .catch((error) => {
-        // An error occurred
-        // ...
-        console.log(error);
-      });
+    });
   };
 
   //google sign in
   const googleLogin = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-        console.log(token, user);
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
-        console.log(errorCode, errorMessage, email, credential);
-      });
+    return signInWithPopup(auth, googleProvider);
   };
 
   const authData = {
@@ -126,6 +75,8 @@ const AuthProvider = ({ children }) => {
     login,
     uploadNameAndPhoto,
     googleLogin,
+    loading,
+    setLoading,
   };
   return <AuthContext value={authData}>{children}</AuthContext>;
 };

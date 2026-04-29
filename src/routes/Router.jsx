@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import Register from "../pages/register";
 import BookDetails from "../pages/BookDetails";
 import PageNotFound from "../components/PageNotFound";
+import PrivateRoute from "../components/PrivateRoute";
 
 const Router = createBrowserRouter([
   {
@@ -20,8 +21,22 @@ const Router = createBrowserRouter([
         Component: Home,
       },
       { path: "all-books", Component: AllBooks },
-      { path: "create-book", Component: CreateAndUpdateBook },
-      { path: "my-books", Component: MyBooks },
+      {
+        path: "create-book",
+        element: (
+          <PrivateRoute>
+            <CreateAndUpdateBook />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "my-books",
+        element: (
+          <PrivateRoute>
+            <MyBooks />
+          </PrivateRoute>
+        ),
+      },
       { path: "login", Component: Login },
       { path: "register", Component: Register },
       {
@@ -33,7 +48,14 @@ const Router = createBrowserRouter([
         element: <CreateAndUpdateBook updating={true}></CreateAndUpdateBook>,
       },
 
-      { path: "book-details/:id", Component: BookDetails },
+      {
+        path: "book-details/:id",
+        element: (
+          <PrivateRoute>
+            <BookDetails />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);
