@@ -6,12 +6,14 @@ import { AuthContext } from "../provider/AuthProvider";
 import SectionTitle from "../components/SectionTitle";
 import Loading from "../components/Loading";
 import DataLoadError from "../components/DataLoadError";
+import toast from "react-hot-toast";
 
 const MyBooks = () => {
   let navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
 
   const { user } = use(AuthContext);
   useEffect(() => {
@@ -33,22 +35,21 @@ const MyBooks = () => {
   }, [user]); // ← empty array ensures this runs only once on mount
 
   const handleDelete = (id) => {
-    console.log("delete id", id);
+    // console.log("delete id", id);
     fetch(`http://localhost:3000/delete-book/${id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log("after delete", data);
+      .then(() => {
+        // console.log("after delete", data);
+        setData((prev) => prev.filter((single) => single._id !== id));
+        toast.success("Successfully deleted book.");
       });
   };
 
   const handleEdit = (id) => {
     navigate(`/update-book/${id}`);
   };
-  {
-    console.log(data);
-  }
   return (
     <div className='w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding)'>
       <SectionTitle>My Books</SectionTitle>
@@ -99,7 +100,10 @@ const MyBooks = () => {
                     </button>
                     <button
                       className='btn btn-neutral btn-ghost btn-square sm:btn-wide sm:px-2'
-                      onClick={() => handleDelete(single._id)}
+                      onClick={() => {
+                        document.getElementById("my_modal_2").showModal();
+                        setDeleteId(single._id);
+                      }}
                     >
                       <MdDelete className='text-xl' />
 
@@ -112,6 +116,23 @@ const MyBooks = () => {
           </ul>
         </MagicCard>
       )}
+      <dialog id='my_modal_2' className='modal'>
+        <div className='modal-box'>
+          <h3 className='font-bold text-lg'>Are you sure?</h3>
+          <form method='dialog' className='flex justify-between mt-10'>
+            <button className='btn btn-neutral'>Cancel</button>
+            <button
+              className='btn btn-error bg-red-400 border-red-400'
+              onClick={() => handleDelete(deleteId)}
+            >
+              Delete
+            </button>
+          </form>
+        </div>
+        <form method='dialog' className='modal-backdrop'>
+          <button>close</button>
+        </form>
+      </dialog>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { AuroraText } from "/src/components/ui/aurora-text";
 import { SparklesText } from "/src/components/ui/sparkles-text";
 import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const { user, createUser, googleLogin, uploadNameAndPhoto } = useAuth();
@@ -13,7 +14,6 @@ const Register = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    console.log(e.target);
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
@@ -30,35 +30,38 @@ const Register = () => {
             // // ...
             // console.log(name, photoURL);
             navigate(location.state || "/");
+            toast.success("Successfully logged in!");
           })
           .catch((error) => {
             // An error occurred
             // ...
-            console.log(error);
+
+            toast.error(error);
           });
       })
       .catch((err) => {
         const errorCode = err.code;
-        const errorMessage = err.message;
-        alert(errorCode, errorMessage);
+        // const errorMessage = err.message;
+        toast.error(errorCode);
       });
   };
 
   const handleGoogleLogin = () => {
     googleLogin()
-      .then((result) => {
+      .then(() => {
         // The signed-in user info.
-        const user = result.user;
-        console.log(user);
+        // const user = result.user;
+        // console.log(user);
         navigate(location.state || "/");
+        toast.success("Successfully logged in!");
       })
       .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
-        const errorMessage = error.message;
+        // const errorMessage = error.message;
         // The email of the user's account used.
-        const email = error.customData.email;
-        console.log(errorCode, errorMessage, email);
+        // const email = error.customData.email;
+        toast.error(errorCode);
       });
   };
 

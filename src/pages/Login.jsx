@@ -5,6 +5,7 @@ import { AuroraText } from "/src/components/ui/aurora-text";
 import { SparklesText } from "/src/components/ui/sparkles-text";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const { user, login, googleLogin } = use(AuthContext);
@@ -13,41 +14,43 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(e.target);
+    // console.log(e.target);
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password);
+    // console.log(email, password);
     login(email, password)
-      .then((userCredential) => {
+      .then(() => {
         // Signed in
-        const user = userCredential.user;
+        // const user = userCredential.user;
         // ...
-        console.log(user);
+        // console.log(user);
         navigate(location.state || "/");
+        toast.success("Successfully logged in!");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        toast.error(errorCode, errorMessage);
       });
   };
 
   const handleGoogleLogin = () => {
     googleLogin()
-      .then((result) => {
+      .then(() => {
         // The signed-in user info.
-        const user = result.user;
-        console.log(user);
+        // const user = result.user;
+        // console.log(user);
         navigate(location.state || "/");
+        toast.success("Successfully logged in!");
       })
       .catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
-        const errorMessage = error.message;
+        // const errorMessage = error.message;
         // The email of the user's account used.
-        const email = error.customData.email;
-        console.log(errorCode, errorMessage, email);
+        // const email = error.customData.email;
+        toast.error(errorCode);
       });
   };
 

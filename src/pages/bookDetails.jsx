@@ -13,6 +13,7 @@ import { IoSend } from "react-icons/io5";
 import { AuthContext } from "../provider/AuthProvider";
 import Loading from "../components/Loading";
 import DataLoadError from "../components/DataLoadError";
+import toast from "react-hot-toast";
 
 const BookDetails = () => {
   const { user } = use(AuthContext);
@@ -38,7 +39,7 @@ const BookDetails = () => {
       })
       .catch((err) => {
         setError(err.message);
-        console.log(err);
+        // console.log(err);
       })
       .finally(() => setLoading(false));
   }, []); // ← empty array ensures this runs only once on mount
@@ -47,7 +48,10 @@ const BookDetails = () => {
   if (error) return <DataLoadError emoji='🫤'>{error}</DataLoadError>;
   const handleComment = (e) => {
     e.preventDefault();
-    console.log(e.target.comment.value);
+    // console.log(e.target.comment.value);
+    if (!e.target.comment.value) {
+      return;
+    }
     const commentContent = e.target.comment.value;
     const userEmail = user?.email;
     const newComment = {
@@ -56,7 +60,7 @@ const BookDetails = () => {
       created_at: new Date().toISOString(),
     };
 
-    console.log(comments);
+    // console.log(comments);
     fetch(`http://localhost:3000/add-comment/${id}`, {
       method: "POST",
       headers: {
@@ -65,8 +69,9 @@ const BookDetails = () => {
       body: JSON.stringify(newComment),
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log("after saving comment", data);
+      .then(() => {
+        // console.log("after saving comment", data);
+        toast.success("Comment added!");
         e.target.reset();
         setComments((prev) => [newComment, ...(prev || [])]);
       });
@@ -191,7 +196,7 @@ const BookDetails = () => {
                 shineColor={["#7928CA", "#daaa63", "#e29a3f", "#FE8BBB"]}
               />
             </div>
-            <p className='text-justify wrap-normal mt-3.5'>{data.summary}</p>
+            <p className='text-justify wrap-anywhere mt-3.5'>{data.summary}</p>
           </div>
         </div>
       </div>

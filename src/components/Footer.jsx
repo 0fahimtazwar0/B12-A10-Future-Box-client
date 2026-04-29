@@ -15,28 +15,28 @@ const Footer = () => {
         </aside>
         <nav>
           <div className='grid grid-flow-col gap-4'>
-            <a>
+            <a href='https://x.com/'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24'
                 height='24'
                 viewBox='0 0 256 256'
               >
-                <title>X-logo-duotone SVG Icon</title>
+                <title>X</title>
                 <g fill='currentColor'>
                   <path d='M208 216h-48L48 40h48Z' opacity='.2' />
                   <path d='m214.75 211.71l-62.6-98.38l61.77-67.95a8 8 0 0 0-11.84-10.76l-58.84 64.72l-40.49-63.63A8 8 0 0 0 96 32H48a8 8 0 0 0-6.75 12.3l62.6 98.37l-61.77 68a8 8 0 1 0 11.84 10.76l58.84-64.72l40.49 63.63A8 8 0 0 0 160 224h48a8 8 0 0 0 6.75-12.29M164.39 208L62.57 48h29l101.86 160Z' />
                 </g>
               </svg>
             </a>
-            <a>
+            <a href='https://youtube.com/'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24'
                 height='24'
                 viewBox='0 0 256 256'
               >
-                <title>Youtube-logo-duotone SVG Icon</title>
+                <title>Youtube</title>
                 <g fill='currentColor'>
                   <path
                     d='M226.59 71.53a16 16 0 0 0-9.63-11C183.48 47.65 128 48 128 48s-55.48-.35-89 12.58a16 16 0 0 0-9.63 11C27.07 80.54 24 98.09 24 128s3.07 47.46 5.41 56.47A16 16 0 0 0 39 195.42C72.52 208.35 128 208 128 208s55.48.35 89-12.58a16 16 0 0 0 9.63-10.95c2.34-9 5.41-26.56 5.41-56.47s-3.11-47.46-5.45-56.47M112 160V96l48 32Z'
@@ -46,14 +46,14 @@ const Footer = () => {
                 </g>
               </svg>
             </a>
-            <a>
+            <a href='https://facebook.com/'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24'
                 height='24'
                 viewBox='0 0 256 256'
               >
-                <title>Facebook-logo-duotone SVG Icon</title>
+                <title>Facebook</title>
                 <g fill='currentColor'>
                   <path
                     d='M224 128a96 96 0 1 1-96-96a96 96 0 0 1 96 96'

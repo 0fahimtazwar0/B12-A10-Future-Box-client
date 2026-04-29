@@ -4,10 +4,11 @@ import { Toggle } from "@/components/ui/toggle";
 import { Slider } from "@/components/ui/slider";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { AuthContext } from "../provider/AuthProvider";
-import { useLocation, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import SectionTitle from "../components/SectionTitle";
 import DataLoadError from "../components/DataLoadError";
 import Loading from "../components/Loading";
+import toast from "react-hot-toast";
 
 const CreateAndUpdateBook = ({ updating }) => {
   const { id } = useParams();
@@ -26,6 +27,7 @@ const CreateAndUpdateBook = ({ updating }) => {
 
   const formRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
     formRef.current?.reset();
   }, [location]);
@@ -51,7 +53,7 @@ const CreateAndUpdateBook = ({ updating }) => {
   // image link loading
 
   async function isImage(url) {
-    console.log("loading start");
+    // console.log("loading start");
     setImageLoading(true);
     return new Promise((resolve) => {
       const img = new Image();
@@ -65,13 +67,13 @@ const CreateAndUpdateBook = ({ updating }) => {
       };
 
       const timeout = setTimeout(() => {
-        alert("image url not found ❌");
+        toast.error("image url not found");
         cleanup(false);
       }, 2000);
 
       img.onload = () => cleanup(true);
       img.onerror = () => {
-        alert("image url not found ❌");
+        toast.error("image url not found");
         cleanup(false);
       };
 
@@ -84,7 +86,7 @@ const CreateAndUpdateBook = ({ updating }) => {
     const timer = setTimeout(async () => {
       const result = await isImage(text);
       setImageLoading(false);
-      console.log("loading end");
+      // console.log("loading end");
       setUrlValid(result);
     }, 600);
 
@@ -97,12 +99,6 @@ const CreateAndUpdateBook = ({ updating }) => {
   if (updating && loading) return <Loading />;
   if (updating && error)
     return <DataLoadError emoji='🫤'>{error}</DataLoadError>;
-  if (updating) {
-    console.log("updating");
-    console.log(data);
-  } else {
-    console.log("creating");
-  }
 
   // image link vs image file
 
@@ -159,7 +155,7 @@ const CreateAndUpdateBook = ({ updating }) => {
         once: true,
       });
 
-      console.log(genre);
+      // console.log(genre);
       return;
     }
     if (text) {
@@ -167,13 +163,13 @@ const CreateAndUpdateBook = ({ updating }) => {
       // console.log("loading end");
       // setImageLoading(false);
       if (!urlValid) {
-        alert("image url not found ❌");
+        toast.error("image url not found");
         return;
       } else {
         const title = e.target.bookName.value;
         const rating = e.target.rating.value;
         const author = e.target.authorName.value;
-        console.log(genre);
+        // console.log(genre);
         const summary = e.target.summary.value;
         const coverImage = e.target.imageUrl.value;
         const newBook = {
@@ -187,7 +183,7 @@ const CreateAndUpdateBook = ({ updating }) => {
           created_at: new Date().toISOString(),
         };
 
-        fetch(
+        const promise = fetch(
           `http://localhost:3000/${updating ? `update-book/${id}` : "add-book"}`,
           {
             method: `${updating ? "PATCH" : "POST"}`,
@@ -198,10 +194,16 @@ const CreateAndUpdateBook = ({ updating }) => {
           },
         )
           .then((res) => res.json())
-          .then((data) => {
-            console.log("after saving book", data);
+          .then(() => {
+            // console.log("after saving book", data);
             e.target.reset();
+            navigate("/all-books");
           });
+        toast.promise(promise, {
+          loading: "Loading...",
+          success: `${updating ? "Updated" : "Created"} book successfully!`,
+          error: `Error ${updating ? "Updating" : "Creating"} book.`,
+        });
       }
     } else {
       const title = e.target.bookName.value;
@@ -220,7 +222,7 @@ const CreateAndUpdateBook = ({ updating }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           const newBook = {
             title,
             author,
@@ -231,7 +233,7 @@ const CreateAndUpdateBook = ({ updating }) => {
             userEmail: user?.email,
             created_at: new Date().toISOString(),
           };
-          fetch(
+          const promise = fetch(
             `http://localhost:3000/${updating ? `update-book/${id}` : "add-book"}`,
             {
               method: `${updating ? "PATCH" : "POST"}`,
@@ -242,10 +244,16 @@ const CreateAndUpdateBook = ({ updating }) => {
             },
           )
             .then((res) => res.json())
-            .then((data) => {
-              console.log("after saving book", data);
+            .then(() => {
+              // console.log("after saving book", data);
               e.target.reset();
+              navigate("/all-books");
             });
+          toast.promise(promise, {
+            loading: "Loading...",
+            success: `${updating ? "Updated" : "Created"} book successfully!`,
+            error: `Error ${updating ? "Updating" : "Creating"} book.`,
+          });
         });
     }
   };

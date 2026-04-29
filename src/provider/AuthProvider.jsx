@@ -10,6 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
+import toast from "react-hot-toast";
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 
@@ -42,10 +43,12 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     signOut(auth)
       .then(() => {
-        console.log("Sign-out successful.");
+        // console.log("Sign-out successful.");
+        toast.success("Sign-out successful.");
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+        toast.error(error);
       });
   };
 
