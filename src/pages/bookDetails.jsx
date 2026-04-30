@@ -24,6 +24,7 @@ const BookDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
+  const [freeze, setFreeze] = useState(false);
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
@@ -52,6 +53,7 @@ const BookDetails = () => {
     if (!e.target.comment.value) {
       return;
     }
+    setFreeze(true);
     const commentContent = e.target.comment.value;
     const userEmail = user?.email;
     const newComment = {
@@ -66,6 +68,7 @@ const BookDetails = () => {
       toast.success("Comment added!");
       e.target.reset();
       setComments((prev) => [newComment, ...(prev || [])]);
+      setFreeze(false);
     });
   };
   return (
@@ -73,12 +76,12 @@ const BookDetails = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 gap-10 w-fit mx-auto'>
         <Link
           to='/all-books'
-          className='btn btn-neutral btn-ghost rounded-full justify-start  md:hidden'
+          className='btn btn-neutral btn-ghost rounded-full justify-start  md:hidden w-fit md:w-full'
         >
           <IoMdArrowRoundBack className='text-xl' />
           Back To All Books
         </Link>
-        <div className='w-fit mt-20 mx-auto flex flex-col items-center justify-center'>
+        <div className='w-fit mt-10 md:mt-20 mx-auto flex flex-col items-center justify-center'>
           <div className='book-container float-img'>
             <div className='book'>
               <img alt='Book Image' src={data.coverImage} />
@@ -97,7 +100,7 @@ const BookDetails = () => {
 
           <div className='md:ml-11 flex flex-col h-full'>
             <div>
-              <h2 className='font-heading text-5xl md:text-6xl wrap-anywhere'>
+              <h2 className='font-heading text-4xl sm:text-5xl md:text-6xl wrap-anywhere'>
                 {data.title}
               </h2>
               <p className='text-lg mt-3'>
@@ -135,15 +138,15 @@ const BookDetails = () => {
                 </div>
               ))}
             </div>
-            <div className='flex-1 min-h-6'></div>
-            <div className='flex p-3.5 rounded-sm font-medium mt-10 md:mt-0 col-span-1 gap-10'>
-              <div>
+            <div className='flex-1 min-h-6 hidden md:block'></div>
+            <div className='grid grid-cols-1 lg:grid-cols-3 py-3.5 rounded-sm font-medium mt-10 md:mt-0 col-span-1 gap-3 lg:gap-10'>
+              <div className='col-span-1 lg:col-span-2'>
                 <p className='text-sm'>Added By </p>
                 <p className='font-semibold truncate text-accent'>
                   {data.userEmail}
                 </p>
               </div>
-              <div>
+              <div className='col-span-1'>
                 <p className='text-sm'>Modified At</p>
                 <p className='font-semibold truncate text-accent'>
                   {/* {data.created_at} */}
@@ -155,7 +158,9 @@ const BookDetails = () => {
         </div>
         <div className='md:col-span-2 flex flex-col-reverse md:flex-row gap-10'>
           <div className='flex-1 mt-14 md:mt-0'>
-            <AuroraText className='font-heading text-5xl'>Comments</AuroraText>
+            <AuroraText className='font-heading text-4xl sm:text-5xl'>
+              Comments
+            </AuroraText>
             <div className='relative w-full mt-2 '>
               <hr className='border' />
               <ShineBorder
@@ -173,7 +178,11 @@ const BookDetails = () => {
                 placeholder='Type a comment...'
                 name='comment'
               />
-              <button type='submit' className='btn btn-accent btn-square ml-2'>
+              <button
+                type='submit'
+                className='btn btn-accent btn-square ml-2'
+                disabled={freeze}
+              >
                 <IoSend />
               </button>
             </form>
@@ -182,7 +191,9 @@ const BookDetails = () => {
                 key={index}
                 className='mt-3.5 bg-[#fff8eb] border-2 rounded-box border-primary p-2'
               >
-                <h5 className='font-bold text-accent'>{single.email}</h5>
+                <h5 className='font-bold text-accent wrap-anywhere'>
+                  {single.email}
+                </h5>
                 <p className='text-justify wrap-normal text-sm'>
                   {single.comment}
                 </p>
@@ -190,7 +201,9 @@ const BookDetails = () => {
             ))}
           </div>
           <div className='flex-1 mt-14 md:mt-0'>
-            <AuroraText className='font-heading text-5xl'>Summary</AuroraText>
+            <AuroraText className='font-heading text-4xl sm:text-5xl'>
+              Summary
+            </AuroraText>
             <div className='relative w-full mt-2'>
               <hr className='border' />
               <ShineBorder

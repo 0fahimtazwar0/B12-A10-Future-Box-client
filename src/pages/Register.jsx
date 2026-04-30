@@ -66,12 +66,16 @@ const Register = () => {
   };
 
   return (
-    <div className='h-[90vh] flex flex-col md:flex-row items-center justify-center gap-0 md:gap-15 '>
-      <div className='flex flex-col justify-between h-55 w-fit min-w-sm md:w-fit'>
-        <img src={flyingBook} alt='Flying-Book' className='w-24 select-none' />
+    <div className='[@media(max-height:890px)]:mt-16 w-full  max-w-(--max-width) mx-auto flex flex-col p-(--padding) h-[90vh] md:flex-row items-center justify-center gap-0 md:gap-15 '>
+      <div className='flex flex-col w-full max-w-sm  md:w-fit'>
+        <img
+          src={flyingBook}
+          alt='Flying-Book'
+          className='w-24 select-none [@media(max-height:750px)]:hidden'
+        />
         <div className='flex flex-col gap-2.5'>
           <SparklesText>
-            <AuroraText className='font-heading section-heading font-light'>
+            <AuroraText className='font-heading section-heading font-light '>
               Register Now
             </AuroraText>
           </SparklesText>

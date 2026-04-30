@@ -6,7 +6,10 @@
 @plugin "daisyui" {
   themes: light --default;
 }
-
+@theme {
+  --breakpoint-xs: 30rem;
+  --breakpoint-2xs: 375px;
+}
 @plugin "daisyui/theme" {
   name: "mytheme";
   default: true; /* set as default */
@@ -100,7 +103,7 @@ select:-webkit-autofill:focus {
 }
 
 .section-heading {
-  @apply text-5xl md:text-6xl lg:text-7xl;
+  @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl;
 }
 :root {
   --max-width: 1440px;

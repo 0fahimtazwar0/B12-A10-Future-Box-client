@@ -19,7 +19,7 @@ const Banner = () => {
         <img
           src={flyingBook}
           alt='Flying-Book'
-          className='w-44 sm:w-54 md:w-64 xl:w-80 flex lg:absolute top-[-200px] right-0 2xl:right-15 select-none float-img mx-auto '
+          className='[@media(max-height:775px)]:w-36 w-44 sm:w-54 md:w-64 xl:w-80 flex lg:absolute top-[-200px] right-0 2xl:right-15 select-none float-img mx-auto '
         />
         <div className='text-center lg:text-left font-heading size-heading font-semibold '>
           <div className='flex items-center justify-center lg:justify-start'>
@@ -42,26 +42,26 @@ const Banner = () => {
           </div>
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-2 mt-10 gap-10 lg:gap-2.5'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 [@media(max-height:775px)]:mt-5 mt-10 gap-10 lg:gap-2.5'>
           <div>
-            <hr className='mt-2 border' />
-            <div className='flex justify-center items-center h-full gap-20 mt-2'>
+            <hr className='[@media(max-height:775px)]:mt-1 mt-2 border' />
+            <div className='flex justify-center items-center h-full gap-20 [@media(max-height:775px)]:mt-1 mt-2'>
               <Link
                 to='/all-books'
-                className='banner-btn text-lg lg:text-2xl'
+                className='banner-btn [@media(max-height:775px)]:text-base text-lg lg:text-2xl'
                 role='button'
               >
                 All Books
               </Link>
               <Link
                 to='create-book'
-                className='banner-btn text-lg lg:text-2xl'
+                className='banner-btn [@media(max-height:775px)]:text-base text-lg lg:text-2xl'
                 role='button'
               >
                 Create Book
               </Link>
             </div>
-            <hr className='mt-2 border static lg:hidden' />
+            <hr className='[@media(max-height:775px)]:mt-1 mt-2 border static lg:hidden' />
           </div>
           <TextGenerateEffect
             words='Book Haven is your peaceful escape into the world of stories.
@@ -74,7 +74,7 @@ const Banner = () => {
             animateBy='words'
             staggerDelay={0.02}
             filter={true}
-            className='text-lg xl:text-xl text-justify font-paragraph font-normal'
+            className='[@media(max-height:775px)]:text-sm text-lg xl:text-xl text-justify font-paragraph font-normal'
           />
         </div>
       </div>

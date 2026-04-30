@@ -2,8 +2,10 @@ import React from "react";
 import SectionTitle from "../components/SectionTitle";
 import { InteractiveHoverButton } from "/src/components/ui/interactive-hover-button";
 import podiumImg from "/src/assets/podium.png";
+import { useNavigate } from "react-router";
 
 const BestBook = () => {
+  const navigate = useNavigate();
   return (
     <div className='w-full flex flex-col'>
       <SectionTitle>Book of the Week</SectionTitle>
@@ -31,7 +33,13 @@ const BestBook = () => {
             and twists that will leave you breathless, this epic series stands
             as a pillar of modern fantasy literature.
           </p>
-          <InteractiveHoverButton>View Details</InteractiveHoverButton>
+          <InteractiveHoverButton
+            onClick={() => {
+              navigate("/book-details/69ef3754ae28feec03c7d1aa");
+            }}
+          >
+            View Details
+          </InteractiveHoverButton>
         </div>
       </div>
     </div>

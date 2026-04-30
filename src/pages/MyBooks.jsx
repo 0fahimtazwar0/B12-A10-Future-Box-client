@@ -79,7 +79,7 @@ const MyBooks = () => {
                     <div className='text-lg sm:text-xl md:text-2xl font-semibold font-heading max-w-[90%]'>
                       {single.title}
                     </div>
-                    <div>{single.author}</div>
+                    <div className='text-xs sm:text-base'>{single.author}</div>
                   </div>
                   <div className='flex flex-col gap-3.5 items-stretch justify-center'>
                     <button
