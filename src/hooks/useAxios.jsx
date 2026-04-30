@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://book-haven-server-steel.vercel.app",
+  baseURL: "https://b12-a10-future-box-server-m4n3.onrender.com",
 });
 const useAxios = () => {
   return axiosInstance;
