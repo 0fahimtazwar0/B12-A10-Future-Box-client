@@ -12,7 +12,7 @@ import { Link } from "react-router";
 
 const Banner = () => {
   return (
-    <div className='bg-[url(/src/assets/banner-background.png)] bg-cover bg-no-repeat flex items-center min-h-[calc(100vh-64px)] sm:min-h-screen lg:pt-60 px-(--padding) box-border'>
+    <div className='bg-[url(/src/assets/banner-background.png)] bg-cover bg-no-repeat flex items-center min-h-[calc(100svh-64px)] sm:min-h-svh lg:pt-60 px-(--padding) box-border'>
       <div
         className={`mx-auto h-fit flex flex-col justify-center relative max-w-(--max-width)`}
       >
